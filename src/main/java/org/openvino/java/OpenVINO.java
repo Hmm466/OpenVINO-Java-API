@@ -4,6 +4,7 @@ import com.sun.jna.ptr.PointerByReference;
 import org.openvino.java.base.OpenVINOCls;
 import org.openvino.java.core.VINO;
 import org.openvino.java.domain.Version;
+import org.openvino.java.utils.Console;
 import org.openvino.java.utils.StringUtils;
 import org.openvino.java.utils.SystemUtils;
 
@@ -104,11 +105,17 @@ public class OpenVINO extends OpenVINOCls {
         if (files != null && files.length > 0) {
             for (File file : files) {
                 if (file.getName().matches("libopencv_java\\d+\\." + fileType)) {
-                    targetFiles.add(getCvVersion(file.getName()));
+                    int version = getCvVersion(file.getName().trim());
+                    if (version != -1) {
+                        targetFiles.add(version);
+                    }
                 }
             }
-            targetFiles.sort((a,b)->a.compareTo(b));
-
+            targetFiles.sort((a,b)->b.compareTo(a));
+            if (targetFiles.size() > 0) {
+                System.load(path + "libopencv_java" + targetFiles.get(0) + "." + fileType);
+                return;
+            }
         }
         throw new NullPointerException("Could not find opencv dll for the specified platform");
     }
@@ -117,11 +124,9 @@ public class OpenVINO extends OpenVINOCls {
         if (StringUtils.isNullOrEmpty(name)) {
             return -1;
         }
-        if (name.matches("libopencv_java.d+\\.\\D+")) {
-            Matcher matcher = Pattern.compile("libopencv_java(\\d+)\\.\\D+").matcher(name);
-            if (matcher.find()) {
-                return Integer.parseInt(matcher.group(1));
-            }
+        Matcher matcher = Pattern.compile("libopencv_java(\\d+)\\.\\D+").matcher(name);
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
         }
         return -1;
     }
