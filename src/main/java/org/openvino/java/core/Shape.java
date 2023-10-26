@@ -1,7 +1,7 @@
 package org.openvino.java.core;
 
 import lombok.Data;
-import org.openvino.java.core.structures.OvShape;
+import org.openvino.java.domain.OvShape;
 
 import java.util.ArrayList;
 import java.util.List;

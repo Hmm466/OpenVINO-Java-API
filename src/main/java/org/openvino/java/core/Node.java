@@ -3,7 +3,7 @@ package org.openvino.java.core;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import org.openvino.java.base.OpenVINOCls;
-import org.openvino.java.core.structures.OvShape;
+import org.openvino.java.domain.OvShape;
 import org.openvino.java.enums.NodeType;
 
 public class Node extends OpenVINOCls {

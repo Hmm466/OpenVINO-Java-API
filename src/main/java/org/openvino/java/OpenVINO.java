@@ -3,8 +3,7 @@ package org.openvino.java;
 import com.sun.jna.ptr.PointerByReference;
 import org.openvino.java.base.OpenVINOCls;
 import org.openvino.java.core.VINO;
-import org.openvino.java.domain.Version;
-import org.openvino.java.utils.Console;
+import org.openvino.java.domain.OvVersion;
 import org.openvino.java.utils.StringUtils;
 import org.openvino.java.utils.SystemUtils;
 
@@ -48,10 +47,10 @@ public class OpenVINO extends OpenVINOCls {
         throw new UnsupportedOperationException("The current version does not support this operation. Please wait for the new version.");
     }
 
-    public Version getVersion() {
-        Version version = new Version();
-        verifyExceptionStatus(core.ov_get_openvino_version(version));
-        return version;
+    public OvVersion getVersion() {
+        OvVersion ovVersion = new OvVersion();
+        verifyExceptionStatus(core.ov_get_openvino_version(ovVersion));
+        return ovVersion;
     }
 
     public boolean initByXml(String xmlFile,int coreCode) {

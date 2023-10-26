@@ -6,15 +6,15 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
-import org.openvino.java.core.structures.OvAvailableDevices;
-import org.openvino.java.core.structures.OvCoreVersionList;
-import org.openvino.java.core.structures.OvShape;
-import org.openvino.java.domain.Version;
+import org.openvino.java.domain.OvAvailableDevices;
+import org.openvino.java.domain.OvCoreVersionList;
+import org.openvino.java.domain.OvShape;
+import org.openvino.java.domain.OvVersion;
 import org.openvino.java.utils.StringUtils;
 import org.openvino.java.utils.SystemUtils;
 
 public interface VINO extends Library {
-    int ov_get_openvino_version(Version version);
+    int ov_get_openvino_version(OvVersion version);
 
     /**
      * Constructs OpenVINO Core instance using XML configuration file with devices description.
@@ -246,6 +246,102 @@ public interface VINO extends Library {
      * @param devices A pointer to the ie_core_versions to free memory.
      */
     void ov_core_versions_free(OvAvailableDevices devices);
+
+    /**
+     * Get a const input port of ov_compiled_model_t by name.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param name input tensor name (char *).
+     * @param inputPort A pointer to the ov_output_const_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_input_by_name(Pointer compiledModel,String name,PointerByReference inputPort);
+
+    /**
+     * Get a const input port of ov_compiled_model_t by index.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param index input index.
+     * @param inputPort A pointer to the ov_output_const_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_input_by_index(Pointer compiledModel,long index,PointerByReference inputPort);
+
+    /**
+     * Get a const output port of ov_compiled_model_t by name.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param name input tensor name (char *).
+     * @param outputPort A pointer to the ov_output_const_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_output_by_name(Pointer compiledModel,String name,PointerByReference outputPort);
+
+    /**
+     * Get a const output port of ov_compiled_model_t by index.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param index input index.
+     * @param outputPort A pointer to the ov_output_const_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_output_by_index(Pointer compiledModel,long index,PointerByReference outputPort);
+
+    /**
+     * Get the input size of ov_compiled_model_t.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param size the compiled_model's input size.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_inputs_size(Pointer compiledModel, LongByReference size);
+
+    /**
+     * Get the output size of ov_compiled_model_t.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param size the compiled_model's output size.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_outputs_size(Pointer compiledModel, LongByReference size);
+
+    /**
+     * Gets runtime model information from a device.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param model A pointer to the ov_model_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_get_runtime_model(Pointer compiledModel, PointerByReference model);
+
+    /**
+     * Exports the current compiled model to an output stream `std::ostream`.
+     * The exported model can also be imported via the ov::Core::import_model method.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param modelPath Path to the file.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_export_model(Pointer compiledModel,String modelPath);
+
+    /**
+     * Sets properties for a device, acceptable keys can be found in ov_property_key_xxx.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param key The property key string.
+     * @param value The property value string.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_set_property(Pointer compiledModel,String key,String value);
+
+    /**
+     * Gets properties for current compiled model.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param key Property key.
+     * @param value A pointer to property value.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_get_property(Pointer compiledModel,String key,PointerByReference value);
+
+    /**
+     * Returns pointer to device-specific shared context on a remote accelerator
+     * device that was used to create this CompiledModel.
+     * @param compiledModel A pointer to the ov_compiled_model_t.
+     * @param context Return context.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_compiled_model_get_context(Pointer compiledModel,PointerByReference context);
 
     static VINO load(String path) {
         int osType = SystemUtils.getSystemType();

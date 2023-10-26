@@ -2,14 +2,14 @@ package org.openvino.java.test;
 
 import org.openvino.java.OpenVINO;
 import org.openvino.java.core.*;
-import org.openvino.java.domain.Version;
+import org.openvino.java.domain.OvVersion;
 
 public class OpenVINOTest {
     public static void main(String[] args) {
         System.setProperty("jna.encoding","utf-8");
         String modelPath = "/Users/ming/Downloads/OpenVINO-CSharp-API-csharp3.0/model/yolov8/yolov8s-cls.xml";
         OpenVINO vino = OpenVINO.load("libopenvino_c.dylib");
-        Version version = vino.getVersion();
+        OvVersion version = vino.getVersion();
 
         System.out.println(version.buildNumber + " -- " + version.description);
         Core core = new Core();

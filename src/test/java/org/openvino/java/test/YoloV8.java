@@ -11,7 +11,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.openvino.java.OpenVINO;
 import org.openvino.java.core.*;
 import org.openvino.java.core.Core;
-import org.openvino.java.domain.Version;
+import org.openvino.java.domain.OvVersion;
 import org.openvino.java.model.yolo.Result;
 import org.openvino.java.utils.Console;
 import org.openvino.java.utils.StringUtils;
@@ -40,7 +40,7 @@ public class YoloV8 {
     public void yoloV8Test() {
         vino.loadCvDll();
         System.setProperty("jna.encoding","utf-8");
-        Version version = vino.getVersion();
+        OvVersion version = vino.getVersion();
         Console.WriteLine("---- OpenVINO INFO----");
         Console.WriteLine("Description : %s", version.description);
         Console.WriteLine("Build number: %s", version.buildNumber);

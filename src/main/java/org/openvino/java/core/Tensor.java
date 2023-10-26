@@ -4,8 +4,7 @@ import com.sun.jna.Memory;
 import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import org.openvino.java.base.OpenVINOCls;
-import org.openvino.java.core.structures.OvShape;
-import org.openvino.java.utils.Console;
+import org.openvino.java.domain.OvShape;
 
 public class Tensor extends OpenVINOCls {
 
@@ -34,6 +33,10 @@ public class Tensor extends OpenVINOCls {
         verifyExceptionStatus(getVino().ov_tensor_data(getValue(),pointerByReference));
         if (data.getClass().getName().equals("[F")) {
             pointerByReference.getValue().write(0,(float[]) data,0,((float[])data).length);
+        } else if (data.getClass().getName().equals("[B")) {
+            pointerByReference.getValue().write(0,(byte[]) data,0,((byte[])data).length);
+        } if (data.getClass().getName().equals("[I")) {
+            pointerByReference.getValue().write(0,(int[]) data,0,((int[])data).length);
         }
     }
 

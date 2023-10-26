@@ -2,10 +2,9 @@ package org.openvino.java.core;
 
 import com.sun.jna.ptr.PointerByReference;
 import org.openvino.java.base.OpenVINOCls;
-import org.openvino.java.core.structures.OvAvailableDevices;
+import org.openvino.java.domain.OvAvailableDevices;
 import org.openvino.java.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

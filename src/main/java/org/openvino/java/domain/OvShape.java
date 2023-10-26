@@ -1,4 +1,4 @@
-package org.openvino.java.core.structures;
+package org.openvino.java.domain;
 
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.LongByReference;

@@ -97,4 +97,8 @@ public abstract class OpenVINOCls {
      * Release unmanaged resources
      */
     protected abstract void dispose();
+
+    public boolean isNull() {
+        return this.getVinoObj() == null;
+    }
 }
