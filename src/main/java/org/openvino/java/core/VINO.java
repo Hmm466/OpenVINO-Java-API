@@ -730,6 +730,43 @@ public interface VINO extends Library {
      */
     int ov_model_reshape_by_ports(Pointer model,PointerByReference outputPorts,OvPartialShape shape,long size);
 
+    /**
+     * Get the partial shape of port.
+     * @param node A pointer to the ov_output_const_port_t.
+     * @param partialShape Partial shape.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_port_get_partial_shape(Pointer node,OvPartialShape partialShape);
+
+    /**
+     * Get the shape of port object.
+     * @param node A pointer to ov_output_port_t.
+     * @param shape A pointer to the tensor name.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_port_get_shape(Pointer node,OvShape shape);
+
+    /**
+     * Create a layout object.
+     * @param layoutDesc The description of layout.
+     * @param layout The layout input pointer.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_layout_create(String layoutDesc,PointerByReference layout);
+
+    /**
+     * Free layout object.
+     * @param layout The pointer of layout
+     */
+    void ov_layout_free(Pointer layout);
+
+    /**
+     * Convert layout object to a readable string.
+     * @param layout layout will be converted.
+     * @return string that describes the layout content.
+     */
+    String ov_layout_to_string(Pointer layout);
+
     static VINO load(String path) {
         int osType = SystemUtils.getSystemType();
         if (StringUtils.isNullOrEmpty(path)) {
