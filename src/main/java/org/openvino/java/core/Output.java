@@ -8,7 +8,7 @@ public class Output extends OpenVINOCls {
 
     private long index;
 
-    public Output(Node node, int index) {
+    public Output(Node node, long index) {
         super("Output-" + index,null);
         this.mNode = node;
         this.index = index;

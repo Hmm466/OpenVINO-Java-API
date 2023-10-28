@@ -488,6 +488,248 @@ public interface VINO extends Library {
      */
     int ov_profiling_info_list_free(OvProfilingInfoList list);
 
+    /**
+     * Get single input port of ov_model_t, which only support single input model.
+     * @param model A pointer to the ov_model_t.
+     * @param node A pointer to the ov_output_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_input(Pointer model,PointerByReference node);
+
+    /**
+     * Get an input port of ov_model_t by name.
+     * @param model A pointer to the ov_model_t.
+     * @param tensorName input tensor name (char *).
+     * @param node A pointer to the ov_output_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_input_by_name(Pointer model,String tensorName,PointerByReference node);
+
+    /**
+     * Get an input port of ov_model_t by port index.
+     * @param model A pointer to the ov_model_t.
+     * @param index nput tensor index.
+     * @param node A pointer to the ov_output_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_input_by_index(Pointer model,long index,PointerByReference node);
+
+    /**
+     * Get an single output port of ov_model_t, which only support single output model.
+     * @param model A pointer to the ov_model_t.
+     * @param node A pointer to the ov_output_const_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_output(Pointer model,PointerByReference node);
+
+    /**
+     * Get an output port of ov_model_t by name.
+     * @param model A pointer to the ov_model_t.
+     * @param tensorName output tensor name (char *).
+     * @param node A pointer to the ov_output_const_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_output_by_name(Pointer model,String tensorName,PointerByReference node);
+
+    /**
+     * Get an output port of ov_model_t by port index.
+     * @param model A pointer to the ov_model_t.
+     * @param index input tensor index.
+     * @param node A pointer to the ov_output_const_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_output_by_index(Pointer model,long index,PointerByReference node);
+
+    /**
+     * Get a const single input port of ov_model_t, which only support single input model.
+     * @param model A pointer to the ov_model_t.
+     * @param node A pointer to the ov_output_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_const_input(Pointer model,PointerByReference node);
+
+    /**
+     * Get a const input port of ov_model_t by name.
+     * @param model A pointer to the ov_model_t.
+     * @param tensorName tensor name (char *).
+     * @param node A pointer to the ov_output_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_const_input_by_name(Pointer model,String tensorName,PointerByReference node);
+
+    /**
+     * Get a single const output port of ov_model_t, which only support single output model..
+     * @param model A pointer to the ov_model_t.
+     * @param node A pointer to the ov_output_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_const_output(Pointer model,PointerByReference node);
+
+    /**
+     * Get a const output port of ov_model_t by name.
+     * @param model A pointer to the ov_model_t.
+     * @param tensorName tensor name (char *).
+     * @param node A pointer to the ov_output_port_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_const_output_by_name(Pointer model,String tensorName,PointerByReference node);
+
+    /**
+     * Release the memory allocated by ov_model_t.
+     * @param model A pointer to the ov_model_t to free memory.
+     */
+    void ov_model_free(Pointer model);
+
+    /**
+     * Get the input size of ov_model_t.
+     * @param model A pointer to the ov_model_t.
+     * @param size the model's input size.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_inputs_size(Pointer model,LongByReference size);
+
+    /**
+     * Get the output size of ov_model_t.
+     * @param model A pointer to the ov_model_t.
+     * @param size the model's output size.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_outputs_size(Pointer model,LongByReference size);
+
+    /**
+     * Returns true if any of the ops defined in the model is dynamic shape..
+     * @param model A pointer to the ov_model_t.
+     * @return true if model contains dynamic shapes
+     */
+    boolean ov_model_is_dynamic(Pointer model);
+
+    /**
+     * Check this dimension whether is dynamic
+     * @param dimension The dimension pointer that will be checked.
+     * @return Boolean, true is dynamic and false is static.
+     */
+    boolean ov_dimension_is_dynamic(OvDimension dimension);
+
+    /**
+     * Initialze a partial shape with static rank and dynamic dimension.
+     * Static rank, but dynamic dimensions on some or all axes.
+     * Examples: `{1,2,?,4}` or `{?,?,?}` or `{1,2,-1,4}`
+     * Static rank, and static dimensions on all axes.
+     * Examples: `{ 1,2,3,4}` or `{6}` or `{}`
+     * @param rank support static rank.
+     * @param dimension support dynamic and static dimension.
+     * @param shape The pointer of partial shape
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_partial_shape_create(long rank,OvDimension dimension,OvPartialShape shape);
+
+    /**
+     * Initialze a partial shape with static rank and dynamic dimension.
+     * Dynamic rank:
+     *  Example: `?`
+     * Static rank, but dynamic dimensions on some or all axes.
+     *  Examples: `{1,2,?,4}` or `{?,?,?}` or `{1,2,-1,4}`
+     * Static rank, and static dimensions on all axes.
+     *  Examples: `{ 1,2,3,4}` or `{6}` or `{}`<
+     * @param rank support dynamic and static rank.
+     * @param dims support dynamic and static dimension.
+     * @param shape The pointer of partial shape
+     * @return
+     */
+    int ov_partial_shape_create_dynamic(OvRank rank,OvDimension dims,OvPartialShape shape);
+
+    /**
+     * Initialize a partial shape with static rank and static dimension.
+     * @param rank support dynamic and static rank.
+     * @param dims support dynamic and static dimension.
+     * @param shape The pointer of partial shape
+     * @return
+     */
+    int ov_partial_shape_create_static(long rank,LongByReference dims,OvPartialShape shape);
+
+    /**
+     * Release internal memory allocated in partial shape.
+     * @param shape The object's internal memory will be released.
+     */
+    void ov_partial_shape_free(OvPartialShape shape);
+
+    /**
+     *Convert partial shape without dynamic data to a static shape.
+     * @param partialShape The partial_shape pointer.
+     * @param shape The shape pointer.
+     * @return
+     */
+    int ov_partial_shape_to_shape(OvPartialShape partialShape,OvShape shape);
+
+    /**
+     * Convert shape to partial shape.
+     * @param shape The shape.
+     * @param partialShape The partial_shape pointer.
+     * @return
+     */
+    int ov_shape_to_partial_shape(OvShape shape,OvPartialShape partialShape);
+
+    /**
+     * Check this partial_shape whether is dynamic
+     * @param shape The shape.
+     * @return
+     */
+    boolean ov_partial_shape_is_dynamic(OvPartialShape shape);
+
+    /**
+     * Helper function, convert a partial shape to readable string.
+     * @param shape The partial_shape pointer.
+     * @return A string reprensts partial_shape's content.
+     */
+    String ov_partial_shape_to_string(OvPartialShape shape);
+
+    /**
+     * Do reshape in model with a list of (name, partial shape).
+     * @param model A pointer to the ov_model_t.
+     * @param tensorNames The list of input tensor names.
+     * @param shape A PartialShape list.
+     * @param size The item count in the list.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_reshape(Pointer model,String[] tensorNames,OvPartialShape shape,long size);
+
+    /**
+     * Do reshape in model with partial shape for a specified name.
+     * @param model A pointer to the ov_model_t.
+     * @param tensorName The tensor name of input tensor.
+     * @param shape A PartialShape.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_reshape_input_by_name(Pointer model,String tensorName,OvPartialShape shape);
+
+    /**
+     * Do reshape in model for one node(port 0).
+     * @param model A pointer to the ov_model_t.
+     * @param shape A PartialShape.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_reshape_single_input(Pointer model,OvPartialShape shape);
+
+    /**
+     * Do reshape in model with a list of (port id, partial shape).
+     * @param model A pointer to the ov_model_t.
+     * @param portIndexes The array of port indexes.
+     * @param shape A PartialShape list.
+     * @param size The item count in the list.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_reshape_by_port_indexes(Pointer model,long portIndexes,OvPartialShape shape,long size);
+
+    /**
+     * Do reshape in model with a list of (ov_output_port_t, partial shape).
+     * @param model A pointer to the ov_model_t.
+     * @param outputPorts The ov_output_port_t list.
+     * @param shape A PartialShape list.
+     * @param size The item count in the list.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_model_reshape_by_ports(Pointer model,PointerByReference outputPorts,OvPartialShape shape,long size);
+
     static VINO load(String path) {
         int osType = SystemUtils.getSystemType();
         if (StringUtils.isNullOrEmpty(path)) {
