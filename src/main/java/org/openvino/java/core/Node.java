@@ -53,4 +53,8 @@ public class Node extends OpenVINOCls {
             setVinoObj(null);
         }
     }
+
+    public NodeType getNodeType() {
+        return nodeType;
+    }
 }

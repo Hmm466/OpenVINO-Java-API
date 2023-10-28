@@ -6,10 +6,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
-import org.openvino.java.domain.OvAvailableDevices;
-import org.openvino.java.domain.OvCoreVersionList;
-import org.openvino.java.domain.OvShape;
-import org.openvino.java.domain.OvVersion;
+import org.openvino.java.domain.*;
 import org.openvino.java.utils.StringUtils;
 import org.openvino.java.utils.SystemUtils;
 
@@ -342,6 +339,154 @@ public interface VINO extends Library {
      * @return Status code of the operation: OK(0) for success.
      */
     int ov_compiled_model_get_context(Pointer compiledModel,PointerByReference context);
+
+    /**
+     * Release the memory allocated by ov_infer_request_t.
+     * @param inferRequest A pointer to the ov_infer_request_t to free memory.
+     * @return
+     */
+    void ov_infer_request_free(Pointer inferRequest);
+
+    /**
+     * Set an input/output tensor to infer on by the name of tensor.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param tensorName Name of the input or output tensor.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_set_tensor(Pointer inferRequest,String tensorName,Pointer tensor);
+
+    /**
+     * Set an input/output tensor to infer request for the port.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param port Port of the input or output tensor, which can be got by calling ov_model_t/ov_compiled_model_t interface.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_set_tensor_by_port(Pointer inferRequest,Pointer port,Pointer tensor);
+
+    /**
+     * Set an input/output tensor to infer request for the port.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param port Const port of the input or output tensor, which can be got by call interface from ov_model_t/ov_compiled_model_t.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_set_tensor_by_const_port(Pointer inferRequest,Pointer port,Pointer tensor);
+
+    /**
+     * Set an input tensor to infer on by the index of tensor.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param index Index of the input port. If @p idx is greater than the number of model inputs, an error will return.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_set_input_tensor_by_index(Pointer inferRequest,long index,Pointer tensor);
+
+    /**
+     * Set an input tensor for the model with single input to infer on.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_set_input_tensor(Pointer inferRequest,Pointer tensor);
+
+    /**
+     * Set an output tensor to infer by the index of output tensor.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param index Index of the output tensor.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_set_output_tensor_by_index(Pointer inferRequest,long index,Pointer tensor);
+
+    /**
+     * Set an output tensor to infer models with single output.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_set_output_tensor(Pointer inferRequest,Pointer tensor);
+
+    /**
+     * Get an input/output tensor by const port.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param port Port of the tensor to get. @p port is not found, an error will return.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_get_tensor_by_const_port(Pointer inferRequest,Pointer port,PointerByReference tensor);
+
+    /**
+     * Get an input/output tensor by port.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param port Port of the tensor to get. @p port is not found, an error will return.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_get_tensor_by_port(Pointer inferRequest,Pointer port,PointerByReference tensor);
+
+    /**
+     * Get an input tensor by the index of input tensor.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param index index of the tensor to get. @p idx. If the tensor with the specified @p idx is not found, an error will return.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_get_input_tensor_by_index(Pointer inferRequest,long index,PointerByReference tensor);
+
+    /**
+     * Get an output tensor by the index of output tensor.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param index index of the tensor to get. @p idx. If the tensor with the specified @p idx is not found, an error will return.
+     * @param tensor Reference to the tensor.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_get_output_tensor_by_index(Pointer inferRequest,long index,PointerByReference tensor);
+
+    /**
+     * Cancel inference request.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_cancel(Pointer inferRequest);
+
+    /**
+     * Start inference of specified input(s) in asynchronous mode.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_start_async(Pointer inferRequest);
+
+    /**
+     * Wait for the result to become available.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_wait(Pointer inferRequest);
+
+    /**
+     * Waits for the result to become available. Blocks until the specified timeout has elapsed or the result becomes available, whichever comes first.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param timeout Maximum duration, in milliseconds, to block for.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_wait_for(Pointer inferRequest,long timeout);
+
+    /**
+     * Query performance measures per layer to identify the most time consuming operation.
+     * @param inferRequest A pointer to the ov_infer_request_t.
+     * @param list Vector of profiling information for operations in a model.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_infer_request_get_profiling_info(Pointer inferRequest, OvProfilingInfoList list);
+
+    /**
+     * Release the memory allocated by ov_profiling_info_list_t.
+     * @param list A pointer to the ov_profiling_info_list_t to free memory.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_profiling_info_list_free(OvProfilingInfoList list);
 
     static VINO load(String path) {
         int osType = SystemUtils.getSystemType();

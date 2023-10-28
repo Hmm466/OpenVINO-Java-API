@@ -30,4 +30,8 @@ public class Output extends OpenVINOCls {
     protected void dispose() {
 
     }
+
+    public Node getNode() {
+        return mNode;
+    }
 }

@@ -192,6 +192,4 @@ public class Core extends OpenVINOCls {
         getVino().ov_core_free(getValue());
         setVinoObj(null);
     }
-
-
 }
