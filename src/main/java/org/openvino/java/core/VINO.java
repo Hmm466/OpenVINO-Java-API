@@ -761,11 +761,76 @@ public interface VINO extends Library {
     void ov_layout_free(Pointer layout);
 
     /**
+     * Initialize a fully shape object, allocate space for its dimensions and set its content id dims is not null.
+     * @param rank The rank value for this object, it should be more than 0(>0)
+     * @param dims The dimensions data for this shape object, it's size should be equal to rank.
+     * @param shape The input/output shape object pointer.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_shape_create(long rank,LongByReference dims,OvShape shape);
+
+    /**
+     * Free a shape object's internal memory.
+     * @param shape The input shape object pointer.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_shape_free(Pointer shape);
+
+    /**
      * Convert layout object to a readable string.
      * @param layout layout will be converted.
      * @return string that describes the layout content.
      */
     String ov_layout_to_string(Pointer layout);
+
+    /**
+     * Constructs Tensor using element type and shape. Allocate internal host storage using default allocator.
+     * @param type Tensor element type.
+     * @param shape Tensor shape.
+     * @param hostPort Pointer to pre-allocated host memory.
+     * @param tensor A point to ov_tensor_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_tensor_create_from_host_ptr(int type,OvShape shape,Pointer hostPort,PointerByReference tensor);
+
+    /**
+     * Constructs Tensor using element type and shape. Allocate internal host storage using default allocator.
+     * @param type Tensor element type
+     * @param shape Tensor shape.
+     * @param tensor A point to ov_tensor_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_tensor_create(int type,OvShape shape,PointerByReference tensor);
+
+    /**
+     * Set new shape for tensor, deallocate/allocate if new total size is bigger than previous one.
+     * @param tensor A point to ov_tensor_t.
+     * @param shape Tensor shape.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_tensor_set_shape(Pointer tensor,OvShape shape);
+
+    /**
+     * Get type for tensor.
+     * @param tensor A point to ov_tensor_t.
+     * @param type Tensor element type.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_tensor_get_element_type(Pointer tensor,IntByReference type);
+
+    /**
+     * the size of the current Tensor in bytes.
+     * @param tensor A point to ov_tensor_t
+     * @param size the size of the current Tensor in bytes.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_tensor_get_byte_size(Pointer tensor,LongByReference size);
+
+    /**
+     * Free ov_tensor_t.
+     * @param tensor A point to ov_tensor_t
+     */
+    void ov_tensor_free(Pointer tensor);
 
     static VINO load(String path) {
         int osType = SystemUtils.getSystemType();

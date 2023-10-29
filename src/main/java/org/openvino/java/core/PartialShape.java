@@ -141,7 +141,7 @@ public class PartialShape extends OpenVINOCls {
     public PartialShape(Shape shape) {
         super("PartialShape",null);
         partialShape = new OvPartialShape();
-        verifyExceptionStatus(getVino().ov_shape_to_partial_shape(shape.getOvShapeT(), partialShape));
+        verifyExceptionStatus(getVino().ov_shape_to_partial_shape(shape.getShape(), partialShape));
         this.rank = new Dimension(shape.getRank());
         dimensions = new Dimension[(int) shape.getRank()];
         for (int i = 0; i < dimensions.length; ++i) {
