@@ -16,6 +16,7 @@ public class Dimension {
 
     /**
      * Construct a static dimension.
+     *
      * @param dimension Value of the dimension.
      */
     public Dimension(long dimension) {
@@ -26,6 +27,7 @@ public class Dimension {
 
     /**
      * Construct a dynamic dimension with ov_dimension struct.
+     *
      * @param ovDimension The ov_dimension struct.
      */
     public Dimension(OvDimension ovDimension) {
@@ -34,6 +36,7 @@ public class Dimension {
 
     /**
      * Construct a dynamic dimension with bounded range
+     *
      * @param min_dimension The lower inclusive limit for the dimension
      * @param max_dimension The upper inclusive limit for the dimension
      */
@@ -45,6 +48,7 @@ public class Dimension {
 
     /**
      * Get ov_dimension struct.
+     *
      * @return Return ov_dimension struct.
      */
     public OvDimension getDimension() {
@@ -53,6 +57,7 @@ public class Dimension {
 
     /**
      * Get max.
+     *
      * @return Dimension max.
      */
     public long getMax() {
@@ -61,6 +66,7 @@ public class Dimension {
 
     /**
      * Get min.
+     *
      * @return Dimension min.
      */
     public long getMin() {
@@ -69,9 +75,10 @@ public class Dimension {
 
     /**
      * Check this dimension whether is dynamic
+     *
      * @return Boolean, true is dynamic and false is static.
      */
     public boolean isDynamic() {
-        return  OpenVINO.getCore().ov_dimension_is_dynamic(mDimension);
+        return OpenVINO.getCore().ov_dimension_is_dynamic(mDimension);
     }
 }

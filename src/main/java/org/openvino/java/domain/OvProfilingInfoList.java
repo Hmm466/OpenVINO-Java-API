@@ -7,7 +7,7 @@ import com.sun.jna.ptr.PointerByReference;
 /**
  * A list of profiling info data
  */
-@Structure.FieldOrder({"profiling_infos","size"})
+@Structure.FieldOrder({"profiling_infos", "size"})
 public class OvProfilingInfoList extends Structure {
 
     /**

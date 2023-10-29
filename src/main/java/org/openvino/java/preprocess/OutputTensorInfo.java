@@ -13,6 +13,7 @@ public class OutputTensorInfo extends OpenVINOCls {
 
     /**
      * Default construction through OutputTensorInfo pointer.
+     *
      * @param ptr OutputTensorInfo pointer.
      */
     public OutputTensorInfo(PointerByReference ptr) {
@@ -29,6 +30,7 @@ public class OutputTensorInfo extends OpenVINOCls {
 
     /**
      * Set element type for user's desired output tensor.
+     *
      * @param type Element type for user's output tensor.
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner.
      */

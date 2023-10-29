@@ -5,9 +5,9 @@ import org.openvino.java.base.OpenVINOCls;
 /**
  * Class holding preprocessing information for one input
  * From preprocessing pipeline perspective, each input can be represented as:
- *  - User's input parameter info (InputInfo::tensor)
- *  - Preprocessing steps applied to user's input (InputInfo::preprocess)
- *  - Model's input info, which is a final input's info after preprocessing (InputInfo::model)
+ * - User's input parameter info (InputInfo::tensor)
+ * - Preprocessing steps applied to user's input (InputInfo::preprocess)
+ * - Model's input info, which is a final input's info after preprocessing (InputInfo::model)
  */
 public class Input extends OpenVINOCls {
 
@@ -23,17 +23,19 @@ public class Input extends OpenVINOCls {
 
     /**
      * Constructs a input.
-     * @param node The node for the input handle.
+     *
+     * @param node  The node for the input handle.
      * @param index The index of the input.
      */
-    public Input(Node node,long index) {
-        super("Input-" + index,null);
+    public Input(Node node, long index) {
+        super("Input-" + index, null);
         this.mNode = node;
         this.index = index;
     }
 
     /**
      * Any tensor names associated with this input
+     *
      * @return tensor names<
      */
     public String getAnyName() {
@@ -42,6 +44,7 @@ public class Input extends OpenVINOCls {
 
     /**
      * The element type of the input referred to by this input handle.
+     *
      * @return The element type of the input.
      */
     public int getElementType() {
@@ -50,6 +53,7 @@ public class Input extends OpenVINOCls {
 
     /**
      * The shape of the input referred to by this input handle.
+     *
      * @return The shape of the input .
      */
     public Shape getShape() {
@@ -58,6 +62,7 @@ public class Input extends OpenVINOCls {
 
     /**
      * Get the node referred to by this input handle.
+     *
      * @return The ouput node
      */
     public Node getNode() {
@@ -66,6 +71,7 @@ public class Input extends OpenVINOCls {
 
     /**
      * The index of the input referred to by this input handle.
+     *
      * @return The index of the input.
      */
     public long getIndex() {
@@ -74,6 +80,7 @@ public class Input extends OpenVINOCls {
 
     /**
      * The partial shape of the input referred to by this input handle.
+     *
      * @return The partial shape of the input
      */
     public PartialShape getPartialShape() {

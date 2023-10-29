@@ -43,9 +43,10 @@ public class Result {
 
     /**
      * object detection
+     *
      * @param score Predictiveness scores
-     * @param rect Identification box
-     * @param cla Identification class
+     * @param rect  Identification box
+     * @param cla   Identification class
      */
     public void add(float score, Rect rect, int cla) {
         type = TYPE_DETECTION;
@@ -56,10 +57,11 @@ public class Result {
 
     /**
      * object segmentation
+     *
      * @param score Predictiveness scores
-     * @param rect Identification box
-     * @param cla Identification class
-     * @param mask Semantic segmentation results
+     * @param rect  Identification box
+     * @param cla   Identification class
+     * @param mask  Semantic segmentation results
      */
     public void add(float score, Rect rect, int cla, Mat mask) {
         type = TYPE_SEGMENTATION;
@@ -71,9 +73,10 @@ public class Result {
 
     /**
      * Key point prediction
+     *
      * @param score Predictiveness scores
-     * @param rect Identification box
-     * @param pose Key point data
+     * @param rect  Identification box
+     * @param pose  Key point data
      */
     public void add(float score, Rect rect, PoseData pose) {
         type = KEY_KEY_POINT_PREDICTION;
@@ -88,9 +91,10 @@ public class Result {
 
     /**
      * Get Result Length
+     *
      * @return
      */
-    public int getLength(){
+    public int getLength() {
         return scores.size();
     }
 

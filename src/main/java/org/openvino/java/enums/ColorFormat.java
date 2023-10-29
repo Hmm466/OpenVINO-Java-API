@@ -13,7 +13,7 @@ public enum ColorFormat {
      */
     NV12_SINGLE_PLANE,
     /**
-     *Image in NV12 format represented as separate tensors for Y and UV planes.
+     * Image in NV12 format represented as separate tensors for Y and UV planes.
      */
     NV12_TWO_PLANES,
     /**

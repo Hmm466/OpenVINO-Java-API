@@ -30,6 +30,7 @@ public abstract class OpenVINOCls {
 
     /**
      * verify if an exception occurred when calling the function
+     *
      * @param status the state returned by the function
      * @throws RuntimeException If the status is not OK, a RuntimeException will be thrown
      */

@@ -11,47 +11,50 @@ public class Node extends OpenVINOCls {
 
     private NodeType nodeType;
 
-    public Node(PointerByReference node,NodeType type) {
-        super("Node",node);
+    public Node(PointerByReference node, NodeType type) {
+        super("Node", node);
         this.nodeType = type;
     }
 
     public PartialShape getPartialShape() {
         OvPartialShape shape = new OvPartialShape();
-        verifyExceptionStatus(getVino().ov_port_get_partial_shape(getValue(),shape));
+        verifyExceptionStatus(getVino().ov_port_get_partial_shape(getValue(), shape));
         return new PartialShape(shape);
     }
 
     /**
      * Get the unique name of the node.
+     *
      * @return A const reference to the node's unique name.
      */
     public String getName() {
         PointerByReference name = new PointerByReference();
-        verifyExceptionStatus(getVino().ov_port_get_any_name(getValue(),name));
+        verifyExceptionStatus(getVino().ov_port_get_any_name(getValue(), name));
         return name.getValue().getString(0);
     }
 
     /**
      * Checks that there is exactly one output and returns its element type.
+     *
      * @return Data type.
      */
     public int getElementType() {
         IntByReference type = new IntByReference();
-        verifyExceptionStatus(getVino().ov_port_get_element_type(getValue(),type));
+        verifyExceptionStatus(getVino().ov_port_get_element_type(getValue(), type));
         return type.getValue();
     }
 
     /**
      * Get the shape.
+     *
      * @return Returns the shape.
      */
     public Shape getShape() {
         OvShape shape = new OvShape();
         if (nodeType == NodeType.e_const) {
-            verifyExceptionStatus(getVino().ov_const_port_get_shape(getValue(),shape));
+            verifyExceptionStatus(getVino().ov_const_port_get_shape(getValue(), shape));
         } else {
-            verifyExceptionStatus(getVino().ov_port_get_shape(getValue(),shape));
+            verifyExceptionStatus(getVino().ov_port_get_shape(getValue(), shape));
         }
         return new Shape(shape);
     }
@@ -61,8 +64,7 @@ public class Node extends OpenVINOCls {
         if (getPointer() != null && getValue() != null) {
             if (nodeType == NodeType.e_const) {
                 getVino().ov_output_const_port_free(getValue());
-            }
-            else {
+            } else {
                 getVino().ov_output_port_free(getValue());
             }
             setVinoObj(null);

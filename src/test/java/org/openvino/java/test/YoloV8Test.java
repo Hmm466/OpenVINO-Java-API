@@ -13,6 +13,7 @@ import org.openvino.java.core.*;
 import org.openvino.java.core.Core;
 import org.openvino.java.domain.OvVersion;
 import org.openvino.java.model.yolo.Result;
+import org.openvino.java.model.yolo.YoloV8;
 import org.openvino.java.utils.Console;
 import org.openvino.java.utils.StringUtils;
 
@@ -20,7 +21,7 @@ import java.io.File;
 import java.util.List;
 
 
-public class YoloV8 {
+public class YoloV8Test {
 
     private OpenVINO vino;
     private String classer_path = "dataset/lable/COCO_lable.txt";
@@ -39,7 +40,7 @@ public class YoloV8 {
     @Test
     public void yoloV8Test() {
         vino.loadCvDll();
-        System.setProperty("jna.encoding","utf-8");
+        System.setProperty("jna.encoding", "utf-8");
         OvVersion version = vino.getVersion();
         Console.WriteLine("---- OpenVINO INFO----");
         Console.WriteLine("Description : %s", version.description);
@@ -71,35 +72,35 @@ public class YoloV8 {
         Rect roi = new Rect(0, 0, image.cols(), image.rows());
         image.copyTo(new Mat(maxImage, roi));
         float[] factors = new float[4];
-        factors[0] = factors[1] = (float)(maxImageLength / 640.0);
+        factors[0] = factors[1] = (float) (maxImageLength / 640.0);
         factors[2] = image.rows();
         factors[3] = image.cols();
 
         // -------- Step 6. Set up input --------
         Tensor inputTensor = inferRequest.getInputTensor();
         Shape inputShape = inputTensor.getShape();
-        Mat inputMat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(inputShape.getDims().get(2), inputShape.getDims().get(3)), new Scalar(0,0, 0), true, false);
-        float[] inputData = new float[(int)(inputShape.getDims().get(1) * inputShape.getDims().get(2) * inputShape.getDims().get(3))];
-        inputData = new Pointer(inputMat.dataAddr()).getFloatArray(0,inputData.length);
+        Mat inputMat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(inputShape.getDims().get(2), inputShape.getDims().get(3)), new Scalar(0, 0, 0), true, false);
+        float[] inputData = new float[(int) (inputShape.getDims().get(1) * inputShape.getDims().get(2) * inputShape.getDims().get(3))];
+        inputData = new Pointer(inputMat.dataAddr()).getFloatArray(0, inputData.length);
         inputTensor.setData(inputData);
         // -------- Step 7. Do inference synchronously --------
         inferRequest.infer();
 
         Tensor outputTensor = inferRequest.getOutputTensor();
-        int outputLength = (int)outputTensor.getSize();
-        float[] outputData = outputTensor.getData(float.class,outputLength);
-        org.openvino.java.model.yolo.YoloV8.ResultProcess process = new org.openvino.java.model.yolo.YoloV8.ResultProcess(factors, 80);
+        int outputLength = (int) outputTensor.getSize();
+        float[] outputData = outputTensor.getData(float.class, outputLength);
+        YoloV8 process = new YoloV8(factors, 80);
         Result result = process.processDetResult(outputData);
         process.printResult(result);
         if (!StringUtils.isNullOrEmpty(classer_path)) {
             process.readClassNames(classer_path);
             Mat resultImage = process.drawDetResult(result, image);
-            HighGui.imshow("result",resultImage);
+            HighGui.imshow("result", resultImage);
             HighGui.waitKey(0);
         }
     }
 
-    public void seg(){
+    public void seg() {
         String modelPath = new File("").getAbsolutePath() + "/model/yolov8/yolov8s-seg.xml";
         // -------- Step 1. Initialize OpenVINO Runtime Core --------
         Core core = new Core();
@@ -124,38 +125,37 @@ public class YoloV8 {
         Rect roi = new Rect(0, 0, image.cols(), image.rows());
         image.copyTo(new Mat(maxImage, roi));
         float[] factors = new float[4];
-        factors[0] = factors[1] = (float)(maxImageLength / 640.0);
+        factors[0] = factors[1] = (float) (maxImageLength / 640.0);
         factors[2] = image.rows();
         factors[3] = image.cols();
 
         // -------- Step 6. Set up input --------
         Tensor inputTensor = inferRequest.getInputTensor();
         Shape input_shape = inputTensor.getShape();
-        Mat input_mat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(input_shape.getDims().get(2), input_shape.getDims().get(3)), new Scalar(0,0, 0), true, false);
-        float[] inputData = new float[(int)(input_shape.getDims().get(1) * input_shape.getDims().get(2) * input_shape.getDims().get(3))];
-        inputData = new Pointer(input_mat.dataAddr()).getFloatArray(0,inputData.length);
+        Mat input_mat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(input_shape.getDims().get(2), input_shape.getDims().get(3)), new Scalar(0, 0, 0), true, false);
+        float[] inputData = new float[(int) (input_shape.getDims().get(1) * input_shape.getDims().get(2) * input_shape.getDims().get(3))];
+        inputData = new Pointer(input_mat.dataAddr()).getFloatArray(0, inputData.length);
         inputTensor.setData(inputData);
         // -------- Step 7. Do inference synchronously --------
         inferRequest.infer();
 
         Tensor outputTensorDet = inferRequest.getTensor("output0");
-        int outputLengthDet = (int)outputTensorDet.getSize();
-        float[] outputDataDet = outputTensorDet.getData(float[].class,outputLengthDet);
+        int outputLengthDet = (int) outputTensorDet.getSize();
+        float[] outputDataDet = outputTensorDet.getData(float[].class, outputLengthDet);
 
         Tensor outputTensorPro = inferRequest.getTensor("output1");
-        int outputLengthPro = (int)outputTensorPro.getSize();
-        float[] outputDataPro = outputTensorPro.getData(float[].class,outputLengthPro);
+        int outputLengthPro = (int) outputTensorPro.getSize();
+        float[] outputDataPro = outputTensorPro.getData(float[].class, outputLengthPro);
 
-        org.openvino.java.model.yolo.YoloV8.ResultProcess process = new org.openvino.java.model.yolo.YoloV8.ResultProcess(factors, 80);
+        YoloV8 process = new YoloV8(factors, 80);
         Result result = process.processSegResult(outputDataDet, outputDataPro);
 
         process.printResult(result);
 
-        if (classer_path != null)
-        {
+        if (classer_path != null) {
             process.readClassNames(classer_path);
-            Mat resultImage = process.draw_seg_result(result, image);
-            HighGui.imshow("result",resultImage);
+            Mat resultImage = process.drawSegResult(result, image);
+            HighGui.imshow("result", resultImage);
             HighGui.waitKey(0);
         }
     }
@@ -184,32 +184,32 @@ public class YoloV8 {
         Rect roi = new Rect(0, 0, image.cols(), image.rows());
         image.copyTo(new Mat(maxImage, roi));
         float[] factors = new float[4];
-        factors[0] = factors[1] = (float)(maxImageLength / 640.0);
+        factors[0] = factors[1] = (float) (maxImageLength / 640.0);
         factors[2] = image.rows();
         factors[3] = image.cols();
 
         // -------- Step 6. Set up input --------
         Tensor inputTensor = inferRequest.getInputTensor();
         Shape inputShape = inputTensor.getShape();
-        Mat inputMat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(inputShape.getDims().get(2), inputShape.getDims().get(3)), new Scalar(0,0, 0), true, false);
-        float[] inputData = new float[(int)(inputShape.getDims().get(1) * inputShape.getDims().get(2) * inputShape.getDims().get(3))];
-        inputData = new Pointer(inputMat.dataAddr()).getFloatArray(0,inputData.length);
+        Mat inputMat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(inputShape.getDims().get(2), inputShape.getDims().get(3)), new Scalar(0, 0, 0), true, false);
+        float[] inputData = new float[(int) (inputShape.getDims().get(1) * inputShape.getDims().get(2) * inputShape.getDims().get(3))];
+        inputData = new Pointer(inputMat.dataAddr()).getFloatArray(0, inputData.length);
         inputTensor.setData(inputData);
         // -------- Step 7. Do inference synchronously --------
         inferRequest.infer();
 
         // -------- Step 9. Process output --------
         Tensor outputTensor = inferRequest.getOutputTensor();
-        int outputLength = (int)outputTensor.getSize();
-        float[] outputData = outputTensor.getData(float[].class,outputLength);
+        int outputLength = (int) outputTensor.getSize();
+        float[] outputData = outputTensor.getData(float[].class, outputLength);
 
-        org.openvino.java.model.yolo.YoloV8.ResultProcess process = new org.openvino.java.model.yolo.YoloV8.ResultProcess(factors, 80);
+        YoloV8 process = new YoloV8(factors, 80);
         Result result = process.processPoseResult(outputData);
 
 
-        Mat resultImage = process.draw_pose_result(result, image, 0.2);
+        Mat resultImage = process.drawPoseResult(result, image, 0.2);
         process.printResult(result);
-        HighGui.imshow("result",resultImage);
+        HighGui.imshow("result", resultImage);
         HighGui.waitKey(0);
     }
 
@@ -237,25 +237,25 @@ public class YoloV8 {
         Rect roi = new Rect(0, 0, image.cols(), image.rows());
         image.copyTo(new Mat(maxImage, roi));
         float[] factors = new float[4];
-        factors[0] = factors[1] = (float)(maxImageLength / 640.0);
+        factors[0] = factors[1] = (float) (maxImageLength / 640.0);
         factors[2] = image.rows();
         factors[3] = image.cols();
 
         // -------- Step 6. Set up input --------
         Tensor inputTensor = inferRequest.getInputTensor();
         Shape inputShape = inputTensor.getShape();
-        Mat inputMat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(inputShape.getDims().get(2), inputShape.getDims().get(3)), new Scalar(0,0, 0), true, false);
-        float[] inputData = new float[(int)(inputShape.getDims().get(1) * inputShape.getDims().get(2) * inputShape.getDims().get(3))];
-        inputData = new Pointer(inputMat.dataAddr()).getFloatArray(0,inputData.length);
+        Mat inputMat = Dnn.blobFromImage(maxImage, 1.0 / 255.0, new Size(inputShape.getDims().get(2), inputShape.getDims().get(3)), new Scalar(0, 0, 0), true, false);
+        float[] inputData = new float[(int) (inputShape.getDims().get(1) * inputShape.getDims().get(2) * inputShape.getDims().get(3))];
+        inputData = new Pointer(inputMat.dataAddr()).getFloatArray(0, inputData.length);
         inputTensor.setData(inputData);
         // -------- Step 7. Do inference synchronously --------
         inferRequest.infer();
 
         Tensor outputTensor = inferRequest.getOutputTensor();
-        int outputLength = (int)outputTensor.getSize();
-        float[] outputData = outputTensor.getData(float[].class,outputLength);
+        int outputLength = (int) outputTensor.getSize();
+        float[] outputData = outputTensor.getData(float[].class, outputLength);
 
-        org.openvino.java.model.yolo.YoloV8.ResultProcess process = new org.openvino.java.model.yolo.YoloV8.ResultProcess(factors, 80);
+        YoloV8 process = new YoloV8(factors, 80);
         List<org.openvino.java.model.yolo.YoloV8.IntFloatKeyValuePair> result = process.processClsResult(outputData);
 
         process.printResult(result);
@@ -277,7 +277,7 @@ public class YoloV8 {
         outputNode.dispose();
     }
 
-    private static void println(String format,Object ...objects) {
-        System.out.println(String.format(format,objects));
+    private static void println(String format, Object... objects) {
+        System.out.println(String.format(format, objects));
     }
 }

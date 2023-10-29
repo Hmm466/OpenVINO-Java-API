@@ -16,6 +16,7 @@ public class InputTensorInfo extends OpenVINOCls {
 
     /**
      * Default construction through InputTensorInfo pointer.
+     *
      * @param ptr InputTensorInfo pointer.
      */
     public InputTensorInfo(PointerByReference ptr) {
@@ -37,6 +38,7 @@ public class InputTensorInfo extends OpenVINOCls {
      * convenient usage of plane parameters. During build stage, new parameters for each plane will be inserted to the
      * place of original parameter. This means that all parameters located after will shift their positions accordingly
      * (e.g. {param1, param2} will become {param1/Y, param1/UV, param2})
+     *
      * @param format Color format of input image.
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner.
      */
@@ -46,7 +48,6 @@ public class InputTensorInfo extends OpenVINOCls {
     }
 
     /**
-     *
      * @param format
      * @param subNamesSize
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner.
@@ -58,11 +59,12 @@ public class InputTensorInfo extends OpenVINOCls {
 
     /**
      * Set element type for user's input tensor
+     *
      * @param type Element type for user's input tensor.
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner.
      */
     public InputTensorInfo setElementType(ElementType type) {
-        getVino().ov_preprocess_input_tensor_info_set_element_type(getValue(),type.ordinal());
+        getVino().ov_preprocess_input_tensor_info_set_element_type(getValue(), type.ordinal());
         return this;
     }
 
@@ -70,8 +72,9 @@ public class InputTensorInfo extends OpenVINOCls {
      * By default, input image shape is inherited from model input shape. Use this method to specify different
      * width and height of user's input image. In case if input image size is not known, use
      * `set_spatial_dynamic_shape` method.
+     *
      * @param inputHeight Set fixed user's input image height.
-     * @param inputWidth Set fixed user's input image width.
+     * @param inputWidth  Set fixed user's input image width.
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner.
      */
     public InputTensorInfo setSpatialStaticShape(long inputHeight, long inputWidth) {
@@ -81,21 +84,23 @@ public class InputTensorInfo extends OpenVINOCls {
 
     /**
      * Set memory type runtime information for user's input tensor
+     *
      * @param memoryType Memory type. Refer to specific plugin's documentation for exact string format
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner.
      */
     public InputTensorInfo setMemoryType(String memoryType) {
-        getVino().ov_preprocess_input_tensor_info_set_memory_type(getValue(),memoryType);
+        getVino().ov_preprocess_input_tensor_info_set_memory_type(getValue(), memoryType);
         return this;
     }
 
     /**
      * Set layout for user's input tensor
+     *
      * @param layout Layout for user's input tensor.
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner.
      */
     public InputTensorInfo setLayout(Layout layout) {
-        getVino().ov_preprocess_input_tensor_info_set_layout(getValue(),layout.getValue());
+        getVino().ov_preprocess_input_tensor_info_set_layout(getValue(), layout.getValue());
         return this;
     }
 
@@ -103,15 +108,16 @@ public class InputTensorInfo extends OpenVINOCls {
      * Helper function to reuse element type and shape from user's created tensor. Use this only in case if
      * input tensor is already known and available before. Overwrites previously set element type & shape via
      * `set_element_type` and `set_shape`. Tensor's memory type is not reused, so if `runtime_tensor` represents remote
-     *  tensor with particular memory type - you should still specify appropriate memory type manually using
-     *  `set_memory_type`
-     *   As for `InputTensorInfo::set_shape`, this method shall not be used together with methods
-     *  set_spatial_dynamic_shape' and 'set_spatial_static_shape', otherwise ov::AssertFailure exception will be thrown
+     * tensor with particular memory type - you should still specify appropriate memory type manually using
+     * `set_memory_type`
+     * As for `InputTensorInfo::set_shape`, this method shall not be used together with methods
+     * set_spatial_dynamic_shape' and 'set_spatial_static_shape', otherwise ov::AssertFailure exception will be thrown
+     *
      * @param runtimeTensor User's created tensor.
      * @return Reference to 'this' to allow chaining with other calls in a builder-like manner
      */
     public InputTensorInfo setFrom(Tensor runtimeTensor) {
-        getVino().ov_preprocess_input_tensor_info_set_from(getValue(),runtimeTensor.getValue());
+        getVino().ov_preprocess_input_tensor_info_set_from(getValue(), runtimeTensor.getValue());
         return this;
     }
 }

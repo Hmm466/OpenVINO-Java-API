@@ -6,7 +6,7 @@ import com.sun.jna.ptr.PointerByReference;
 /**
  * [struct] Represents version information that describes all devices and ov runtime library
  */
-@Structure.FieldOrder({"core_version","size"})
+@Structure.FieldOrder({"core_version", "size"})
 public class OvCoreVersionList extends Structure {
 
     /**

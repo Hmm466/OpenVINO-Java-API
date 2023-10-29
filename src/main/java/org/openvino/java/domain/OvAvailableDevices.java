@@ -3,7 +3,7 @@ package org.openvino.java.domain;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.PointerByReference;
 
-@Structure.FieldOrder({"devices","size"})
+@Structure.FieldOrder({"devices", "size"})
 public class OvAvailableDevices extends Structure {
 
     /**

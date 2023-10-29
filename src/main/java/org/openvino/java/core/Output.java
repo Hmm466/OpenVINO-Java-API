@@ -3,7 +3,7 @@ package org.openvino.java.core;
 import org.openvino.java.base.OpenVINOCls;
 
 /**
- *  A handle for one of a node's outputs.
+ * A handle for one of a node's outputs.
  */
 public class Output extends OpenVINOCls {
 
@@ -19,17 +19,19 @@ public class Output extends OpenVINOCls {
 
     /**
      * Constructs a Output.
-     * @param node The node for the output handle.
+     *
+     * @param node  The node for the output handle.
      * @param index The index of the output.
      */
     public Output(Node node, long index) {
-        super("Output-" + index,null);
+        super("Output-" + index, null);
         this.mNode = node;
         this.index = index;
     }
 
     /**
      * Any tensor names associated with this input
+     *
      * @return tensor names<
      */
     public String getAnyName() {
@@ -38,6 +40,7 @@ public class Output extends OpenVINOCls {
 
     /**
      * The element type of the input referred to by this input handle.
+     *
      * @return The element type of the input.
      */
     public int getElementType() {
@@ -46,6 +49,7 @@ public class Output extends OpenVINOCls {
 
     /**
      * The shape of the input referred to by this input handle.
+     *
      * @return The shape of the input .
      */
     public Shape getShape() {
@@ -54,6 +58,7 @@ public class Output extends OpenVINOCls {
 
     /**
      * Get the node referred to by this input handle.
+     *
      * @return The ouput node
      */
     public Node getNode() {
@@ -62,6 +67,7 @@ public class Output extends OpenVINOCls {
 
     /**
      * The index of the input referred to by this input handle.
+     *
      * @return The index of the input.
      */
     public long getIndex() {
@@ -70,6 +76,7 @@ public class Output extends OpenVINOCls {
 
     /**
      * The partial shape of the input referred to by this input handle.
+     *
      * @return The partial shape of the input
      */
     public PartialShape getPartialShape() {

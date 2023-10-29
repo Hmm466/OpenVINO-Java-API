@@ -5,7 +5,7 @@ import com.sun.jna.Structure;
 /**
  * Represents version information that describes plugins and the OpemVINO library
  */
-@Structure.FieldOrder({"buildNumber","description"})
+@Structure.FieldOrder({"buildNumber", "description"})
 public class OvVersion extends Structure {
 
     /**

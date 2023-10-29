@@ -21,6 +21,7 @@ public class OpenVINO extends OpenVINOCls {
 
     /**
      * Initialize the open vino API
+     *
      * @return
      */
     public static OpenVINO load() {
@@ -28,7 +29,6 @@ public class OpenVINO extends OpenVINOCls {
     }
 
     /**
-     *
      * @param path
      * @return
      */
@@ -53,17 +53,18 @@ public class OpenVINO extends OpenVINOCls {
         return ovVersion;
     }
 
-    public boolean initByXml(String xmlFile,int coreCode) {
-        verifyExceptionStatus(core.ov_core_create_with_config(xmlFile,coreCode));
+    public boolean initByXml(String xmlFile, int coreCode) {
+        verifyExceptionStatus(core.ov_core_create_with_config(xmlFile, coreCode));
         return true;
     }
 
     private OpenVINO() {
-        super("OpenVINO",null);
+        super("OpenVINO", null);
     }
 
     /**
      * Has it been initialized
+     *
      * @return Initialized will return true, otherwise false
      */
     public static boolean initialized() {
@@ -110,7 +111,7 @@ public class OpenVINO extends OpenVINOCls {
                     }
                 }
             }
-            targetFiles.sort((a,b)->b.compareTo(a));
+            targetFiles.sort((a, b) -> b.compareTo(a));
             if (targetFiles.size() > 0) {
                 System.load(path + "libopencv_java" + targetFiles.get(0) + "." + fileType);
                 return;
@@ -119,7 +120,7 @@ public class OpenVINO extends OpenVINOCls {
         throw new NullPointerException("Could not find opencv dll for the specified platform");
     }
 
-    private static int getCvVersion (String name) {
+    private static int getCvVersion(String name) {
         if (StringUtils.isNullOrEmpty(name)) {
             return -1;
         }

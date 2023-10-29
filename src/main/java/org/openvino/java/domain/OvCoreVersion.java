@@ -5,7 +5,7 @@ import com.sun.jna.Structure;
 /**
  * Represents version information that describes device and ov runtime library
  */
-@Structure.FieldOrder({"device_name","version"})
+@Structure.FieldOrder({"device_name", "version"})
 public class OvCoreVersion extends Structure {
     /**
      * A device name

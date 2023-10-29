@@ -8,7 +8,7 @@ import com.sun.jna.Structure;
  * If the operation is executed using tiling, the sum time per each tile is indicated as the total execution time.
  * Due to parallel execution, the total execution time for all nodes might be greater than the total inference time.
  */
-@Structure.FieldOrder({"real_time","cpu_time","node_name","exec_type","node_type"})
+@Structure.FieldOrder({"real_time", "cpu_time", "node_name", "exec_type", "node_type"})
 public class OvProfilingInfo extends Structure {
 
     /**
