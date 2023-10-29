@@ -832,6 +832,297 @@ public interface VINO extends Library {
      */
     void ov_tensor_free(Pointer tensor);
 
+    /**
+     * Create a ov_preprocess_prepostprocessor_t instance.
+     * @param model A pointer to the ov_model_t.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_create(Pointer model,PointerByReference preprocess);
+
+    /**
+     * Release the memory allocated by ov_preprocess_prepostprocessor_t.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t to free memory.
+     */
+    void ov_preprocess_prepostprocessor_free(Pointer preprocess);
+
+    /**
+     * Get the input info of ov_preprocess_prepostprocessor_t instance.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param preprocessInputInfo A pointer to the ov_preprocess_input_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int v_preprocess_prepostprocessor_get_input_info(Pointer preprocess,PointerByReference preprocessInputInfo);
+
+    /**
+     * Get the input info of ov_preprocess_prepostprocessor_t instance by tensor name.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param tensorName The name of input.
+     * @param preprocessInputInfo A pointer to the ov_preprocess_input_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_get_input_info_by_name(Pointer preprocess, String tensorName, PointerByReference preprocessInputInfo);
+
+    /**
+     * Release the memory allocated by ov_preprocess_input_info_t.
+     * @param preprocess_input_info A pointer to the ov_preprocess_input_info_t to free memory.
+     */
+    void ov_preprocess_input_info_free(Pointer preprocess_input_info);
+
+    /**
+     * Get the input info of ov_preprocess_prepostprocessor_t instance by tensor order.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param tensorIndex The order of input.
+     * @param preprocessInputInfo A pointer to the ov_preprocess_input_info_t
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_get_input_info_by_index(Pointer preprocess, long tensorIndex, PointerByReference preprocessInputInfo);
+
+    /**
+     * Get the input info of ov_preprocess_prepostprocessor_t instance.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param preprocessInputInfo A pointer to the ov_preprocess_input_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_get_input_info(Pointer preprocess, PointerByReference preprocessInputInfo);
+
+    /**
+     * Release the memory allocated by ov_preprocess_input_tensor_info_t.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t to free memory.
+     */
+    void ov_preprocess_input_tensor_info_free(Pointer preprocessInputTensorInfo);
+
+    /**
+     * Get a ov_preprocess_preprocess_steps_t.
+     * @param preprocessInputInfo A pointer to the ov_preprocess_input_info_t.
+     * @param preprocessInputSteps A pointer to ov_preprocess_preprocess_steps_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_info_get_preprocess_steps(Pointer preprocessInputInfo, PointerByReference preprocessInputSteps);
+
+    /**
+     * Release the memory allocated by ov_preprocess_preprocess_steps_t.
+     * @param preprocessInputProcessSteps A pointer to the ov_preprocess_preprocess_steps_t to free memory.
+     */
+    void ov_preprocess_preprocess_steps_free(Pointer preprocessInputProcessSteps);
+
+    /**
+     * Add resize operation to model's dimensions.
+     * @param preprocessInputProcessSteps A pointer to ov_preprocess_preprocess_steps_t.
+     * @param resizeAlgorithm A ov_preprocess_resizeAlgorithm instance
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_resize(Pointer preprocessInputProcessSteps, int resizeAlgorithm);
+
+    /**
+     * Add scale preprocess operation. Divide each element of input by specified value.
+     * @param preprocessInputProcessSteps A pointer to ov_preprocess_preprocess_steps_t.
+     * @param value Scaling value.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_scale(Pointer preprocessInputProcessSteps, float value);
+
+    /**
+     * Add mean preprocess operation. Subtract specified value from each element of input.
+     * @param preprocessInputProcessSteps A pointer to ov_preprocess_preprocess_steps_t.
+     * @param value Value to subtract from each element
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_mean(Pointer preprocessInputProcessSteps, float value);
+
+    /**
+     * Crop input tensor between begin and end coordinates.
+     * @param preprocessInputProcessSteps A pointer to ov_preprocess_preprocess_steps_t.
+     * @param begin Pointer to begin indexes for input tensor cropping.  Negative values represent counting elements from the end of input tensor
+     * @param beginSize The size of begin array.
+     * @param end Pointer to end indexes for input tensor cropping.  End indexes are exclusive, which means values including end edge are not included in the output slice.Negative values represent counting elements from the end of input tensor
+     * @param endSize The size of end array
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_crop(Pointer preprocessInputProcessSteps, int begin, int beginSize, int end, int endSize);
+
+    /**
+     * Add 'convert layout' operation to specified layout.
+     * @param preprocessInputProcessSteps A pointer to ov_preprocess_preprocess_steps_t.
+     * @param layout A point to ov_layout_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_convert_layout(Pointer preprocessInputProcessSteps, PointerByReference layout);
+
+    /**
+     * Reverse channels operation.
+     * @param preprocessInputProcessSteps A pointer to ov_preprocess_preprocess_steps_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_reverse_channels(Pointer preprocessInputProcessSteps);
+
+    /**
+     * Set ov_preprocess_input_tensor_info_t precesion.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t.
+     * @param elementType A point to element_type.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_tensor_info_set_element_type(Pointer preprocessInputTensorInfo, int elementType);
+
+    /**
+     * Set ov_preprocess_input_tensor_info_t color format.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t.
+     * @param colorFormat The enumerate of colorFormat
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_tensor_info_set_color_format(Pointer preprocessInputTensorInfo, int colorFormat);
+
+    /**
+     * Set ov_preprocess_input_tensor_info_t color format with subname.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t.
+     * @param colorFormat The enumerate of colorFormat
+     * @param subNamesSize The size of sub_names.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_tensor_info_set_color_format_with_subname(Pointer preprocessInputTensorInfo, int colorFormat, long subNamesSize);
+
+    /**
+     * Set ov_preprocess_input_tensor_info_t spatial_static_shape.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t.
+     * @param inputHeight The height of input
+     * @param inputWidth The width of input
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_tensor_info_set_spatial_static_shape(Pointer preprocessInputTensorInfo, long inputHeight, long inputWidth);
+
+    /**
+     * Set ov_preprocess_input_tensor_info_t memory type.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t.
+     * @param memType Memory type. Refer to ov_remote_context.h to get memory type string info.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_tensor_info_set_memory_type(Pointer preprocessInputTensorInfo, String memType);
+
+    /**
+     * Convert ov_preprocess_preprocess_steps_t element type.
+     * @param preprocessInputProcessSteps A pointer to the ov_preprocess_preprocess_steps_t.
+     * @param elementType preprocess input element type.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_convert_element_type(Pointer preprocessInputProcessSteps, int elementType);
+
+    /**
+     * onvert ov_preprocess_preprocess_steps_t color.
+     * @param preprocessInputProcessSteps A pointer to the ov_preprocess_preprocess_steps_t.
+     * @param colorFormat The enumerate of colorFormat.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_preprocess_steps_convert_color(Pointer preprocessInputProcessSteps, int colorFormat);
+
+    /**
+     * Helper function to reuse element type and shape from user's created tensor.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t.
+     * @param tensor A point to ov_tensor_t
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_tensor_info_set_from(Pointer preprocessInputTensorInfo, Pointer tensor);
+
+    /**
+     * Set ov_preprocess_input_tensor_info_t layout.
+     * @param preprocessInputTensorInfo A pointer to the ov_preprocess_input_tensor_info_t.
+     * @param layout A point to ov_layout_t
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_tensor_info_set_layout(Pointer preprocessInputTensorInfo, Pointer layout);
+
+    /**
+     * Get the output info of ov_preprocess_output_info_t instance.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param preprocessOutputInfo A pointer to the ov_preprocess_output_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_get_output_info(Pointer preprocess,PointerByReference preprocessOutputInfo);
+
+    /**
+     * Get the output info of ov_preprocess_output_info_t instance.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param tensorIndex The tensor index.
+     * @param preprocessOutputInfo A pointer to the ov_preprocess_output_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_get_output_info_by_index(Pointer preprocess, long tensorIndex, PointerByReference preprocessOutputInfo);
+
+    /**
+     * Get the output info of ov_preprocess_output_info_t instance.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param tensorName The name of input.
+     * @param preprocessOutputInfo A pointer to the ov_preprocess_output_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_get_output_info_by_name(Pointer preprocess, String tensorName, PointerByReference preprocessOutputInfo);
+
+    /**
+     * Release the memory allocated by ov_preprocess_output_info_t.
+     * @param preprocessOutputInfo A pointer to the ov_preprocess_output_info_t to free memory
+     */
+    void ov_preprocess_output_info_free(Pointer preprocessOutputInfo);
+
+    /**
+     * Get a ov_preprocess_input_tensor_info_t.
+     * @param preprocessOutputInfo A pointer to the ov_preprocess_output_info_t.
+     * @param preprocessOutputTensorInfo A pointer to the ov_preprocess_output_tensor_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_output_info_get_tensor_info(Pointer preprocessOutputInfo, PointerByReference preprocessOutputTensorInfo);
+
+    /**
+     * Release the memory allocated by ov_preprocess_output_tensor_info_t.
+     * @param preprocessOutputTensorInfo A pointer to the ov_preprocess_output_tensor_info_t to free memory.
+     */
+    void ov_preprocess_output_tensor_info_free(Pointer preprocessOutputTensorInfo);
+
+    /**
+     * Set ov_preprocess_input_tensor_info_t precesion.
+     * @param preprocessOutputTensorInfo A pointer to the ov_preprocess_output_tensor_info_t.
+     * @param elementType A point to element_type
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_output_set_element_type(Pointer preprocessOutputTensorInfo, int elementType);
+
+    /**
+     * Get current input model information.
+     * @param preprocessInputInfo A pointer to the ov_preprocess_input_info_t.
+     * @param preprocessInputModelInfo A pointer to the ov_preprocess_input_model_info_t
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_info_get_model_info(Pointer preprocessInputInfo, PointerByReference preprocessInputModelInfo);
+
+    /**
+     * Release the memory allocated by ov_preprocess_input_model_info_t.
+     * @param preprocessInputModelInfo A pointer to the ov_preprocess_input_model_info_t to free memory.
+     * @return
+     */
+    int ov_preprocess_input_model_info_free(Pointer preprocessInputModelInfo);
+
+    /**
+     * Set layout for model's input tensor.
+     * @param preprocessInputModelInfo A pointer to the ov_preprocess_input_model_info_t
+     * @param layout A point to ov_layout_t
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_model_info_set_layout(Pointer preprocessInputModelInfo, Pointer layout);
+
+    /**
+     * Adds pre/post-processing operations to function passed in constructor.
+     * @param preprocess A pointer to the ov_preprocess_prepostprocessor_t.
+     * @param model A pointer to the ov_model_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_prepostprocessor_build(Pointer preprocess, PointerByReference model);
+
+    /**
+     * Get a ov_preprocess_input_tensor_info_t.
+     * @param preprocessInputInfo A pointer to the ov_preprocess_input_info_t.
+     * @param preprocessInputTensorInfo A pointer to ov_preprocess_input_tensor_info_t.
+     * @return Status code of the operation: OK(0) for success.
+     */
+    int ov_preprocess_input_info_get_tensor_info(Pointer preprocessInputInfo, PointerByReference preprocessInputTensorInfo);
+
     static VINO load(String path) {
         int osType = SystemUtils.getSystemType();
         if (StringUtils.isNullOrEmpty(path)) {
