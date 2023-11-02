@@ -11,40 +11,55 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ *
+ * @author ming
+ */
 public class YoloV8 {
 
-    /// <summary>
-    /// Identify Result Types
-    /// </summary>
+    /**
+     * Identify Result Types
+     */
     public String[] classNames;
-    /// <summary>
-    /// Image information scaling ratio h, scaling ratio h, height, width
-    /// </summary>
+
+    /**
+     * Image information scaling ratio h, scaling ratio h, height, width
+     */
     public float[] scales;
-    /// <summary>
-    /// Confidence threshold
-    /// </summary>
+
+    /**
+     * Confidence threshold
+     */
     public float scoreThreshold;
-    /// <summary>
-    /// Non maximum suppression threshold
-    /// </summary>
+
+    /**
+     * Non maximum suppression threshold
+     */
     public float nmsThreshold;
-    /// <summary>
-    /// Number of categories
-    /// </summary>
+
+    /**
+     * Number of categories
+     */
     public int categNums = 0;
 
-
-    /// <summary>
-    /// SegmentationResult processing class construction
-    /// </summary>
-    /// <param name="scales">scaling ratio h, scaling ratio h, height, width</param>
-    /// <param name="score_threshold">score threshold</param>
-    /// <param name="nms_threshold">nms threshold</param>
+    /**
+     * SegmentationResult processing class construction
+     *
+     * @param scales    scaling ratio h, scaling ratio h, height, width
+     * @param categNums score threshold
+     */
     public YoloV8(float[] scales, int categNums) {
         this(scales, categNums, 0.3f, 0.5f);
     }
 
+    /**
+     * SegmentationResult processing class construction
+     *
+     * @param scales         scaling ratio h, scaling ratio h, height, width
+     * @param categNums
+     * @param scoreThreshold score threshold
+     * @param nmsThreshold   nms threshold
+     */
     public YoloV8(float[] scales, int categNums, float scoreThreshold, float nmsThreshold) {
         this.scales = scales;
         this.scoreThreshold = scoreThreshold;
@@ -52,16 +67,19 @@ public class YoloV8 {
         this.categNums = categNums;
     }
 
+    /**
+     * Result process
+     *
+     * @param result Model prediction output
+     * @return Model recognition results
+     */
     public Result processDetResult(float[] result) {
         Mat resultData = new Mat(4 + categNums, 8400, CvType.CV_32F);
         resultData.put(0, 0, result);
         resultData = resultData.t();
-//            result_data = result_data.T();
-        // Storage results list
         List<Rect2d> positionBoxes = new ArrayList<>();
         List<Integer> classIds = new ArrayList<Integer>();
         List<Float> confidences = new ArrayList<Float>();
-        // Preprocessing output results
         for (int i = 0; i < resultData.rows(); i++) {
             Mat classes_scores = resultData.row(i).colRange(4, 4 + categNums);//GetArray(i, 5, classes_scores);
             Point maxClassIdPoint, minClassIdPoint;
@@ -114,33 +132,48 @@ public class YoloV8 {
         return reResult;
     }
 
+    /**
+     * Read local recognition result type file to memory
+     * Only the. txt file format is supported, and the content format for this category is as follows:
+     * sea lion
+     * Scottish deerhound
+     * tiger cat
+     * .....
+     *
+     * @param path file path
+     */
     public void readClassNames(String path) {
-        Console.WriteLine("read className:%s", path);
+        Console.println("read className:%s", path);
         classNames = FileUtils.read(path).trim().split("\n");
     }
 
+    /**
+     * Print out image prediction results
+     *
+     * @param result prediction results
+     */
     public void printResult(Result result) {
         if (result.poses.size() != 0) {
-            Console.WriteLine("\n Classification  result : \n");
+            Console.println("\n Classification  result : \n");
             for (int i = 0; i < result.getLength(); ++i) {
                 String ss = (i + 1) + ": 1   " + result.scores.get(i) + "   " + result.rects.get(i) + "  " + result.poses.get(i);
-                Console.WriteLine(ss);
+                Console.println(ss);
             }
             return;
         }
 
         if (result.masks.size() != 0) {
-            Console.WriteLine("\n  Segmentation  result : \n");
+            Console.println("\n  Segmentation  result : \n");
             for (int i = 0; i < result.getLength(); ++i) {
                 String ss = (i + 1) + ": " + result.classes.get(i) + "\t" + result.scores.get(i) + "   " + result.rects.get(i);
-                Console.WriteLine(ss);
+                Console.println(ss);
             }
             return;
         }
-        Console.WriteLine("\n  Detection  result : \n");
+        Console.println("\n  Detection  result : \n");
         for (int i = 0; i < result.getLength(); ++i) {
             String ss = (i + 1) + ": " + result.classes.get(i) + "\t" + result.scores.get(i) + "   " + result.rects.get(i);
-            Console.WriteLine(ss);
+            Console.println(ss);
         }
 
     }
@@ -157,6 +190,13 @@ public class YoloV8 {
         return image;
     }
 
+    /**
+     * Result process
+     *
+     * @param detect detection output
+     * @param proto  segmentation output
+     * @return
+     */
     public Result processSegResult(float[] detect, float[] proto) {
         Mat detectData = new Mat(36 + categNums, 8400, CvType.CV_32F);
         detectData.put(0, 0, detect);
@@ -288,6 +328,13 @@ public class YoloV8 {
         return b;
     }
 
+    /**
+     * Result drawing
+     *
+     * @param result recognition result
+     * @param image  image
+     * @return
+     */
     public Mat drawSegResult(Result result, Mat image) {
         Mat masked_img = new Mat();
         // Draw recognition results on the image
@@ -303,6 +350,12 @@ public class YoloV8 {
         return masked_img;
     }
 
+    /**
+     * Result process
+     *
+     * @param result Model prediction output
+     * @return Model recognition results
+     */
     public Result processPoseResult(float[] result) {
         Mat resultData = new Mat(56, 8400, CvType.CV_32F);
         resultData.put(0, 0, result);
@@ -330,9 +383,7 @@ public class YoloV8 {
                 float[] pose_data = new float[51];
                 pose_mat.get(0, 0, pose_data);
                 PoseData pose = new PoseData(pose_data, this.scales);
-
                 positionBoxes.add(box);
-
                 confidences.add(resultData.at(float.class, i, 4).getV());
                 pose_datas.add(pose);
             }
@@ -354,7 +405,6 @@ public class YoloV8 {
             int index = datas[i];
             Rect2d rect2d = positionBoxes.get(index);
             reResult.add(confidences.get(index), new Rect((int) rect2d.x, (int) rect2d.y, (int) rect2d.width, (int) rect2d.height), pose_datas.get(index));
-            //Console.WriteLine("rect: {0}, score: {1}", position_boxes[index], confidences[index]);
         }
         return reResult;
 
@@ -369,11 +419,9 @@ public class YoloV8 {
      * @return
      */
     public Mat drawPoseResult(Result result, Mat image, double visualThresh) {
-
         // 将识别结果绘制到图片上
         for (int i = 0; i < result.getLength(); i++) {
             Imgproc.rectangle(image, result.rects.get(i), new Scalar(0, 0, 255), 2, Imgproc.LINE_8);
-
             drawPoses(result.poses.get(i), image, visualThresh);
         }
         return image;
@@ -401,9 +449,7 @@ public class YoloV8 {
             if (pose.score[p] < visualThresh) {
                 continue;
             }
-
             Imgproc.circle(image, pose.point.get(p), 2, colors[p], -1);
-            //Console.WriteLine(pose.point[p]);
         }
         // draw
         for (int p = 0; p < 17; p++) {
@@ -425,8 +471,10 @@ public class YoloV8 {
     }
 
     /**
-     * @param result
-     * @return
+     * Result process
+     *
+     * @param result Model prediction output
+     * @return Model recognition results
      */
     public List<IntFloatKeyValuePair> processClsResult(float[] result) {
         List<Float[]> newList = new ArrayList<>();
@@ -447,11 +495,11 @@ public class YoloV8 {
      * @param result classification results
      */
     public void printResult(List<IntFloatKeyValuePair> result) {
-        Console.WriteLine("\n Classification Top 10 result : \n");
-        Console.WriteLine("classid probability");
-        Console.WriteLine("------- -----------");
+        Console.println("\n Classification Top 10 result : \n");
+        Console.println("classid probability");
+        Console.println("------- -----------");
         for (int i = 0; i < 10; ++i) {
-            Console.WriteLine("{%d}     {%f}", result.get(i).getKey(), result.get(i).getValue());
+            Console.println("{%d}     {%f}", result.get(i).getKey(), result.get(i).getValue());
         }
     }
 

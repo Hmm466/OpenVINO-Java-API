@@ -5,6 +5,7 @@ import com.sun.jna.ptr.PointerByReference;
 import lombok.Data;
 import org.openvino.java.OpenVINO;
 import org.openvino.java.core.VINO;
+import org.openvino.java.dao.ExceptionStatusListener;
 import org.openvino.java.enums.ExceptionStatus;
 
 @Data

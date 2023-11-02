@@ -3,6 +3,7 @@ package org.openvino.java;
 import com.sun.jna.ptr.PointerByReference;
 import org.openvino.java.base.OpenVINOCls;
 import org.openvino.java.core.VINO;
+import org.openvino.java.dao.ExceptionStatusListener;
 import org.openvino.java.domain.OvVersion;
 import org.openvino.java.utils.StringUtils;
 import org.openvino.java.utils.SystemUtils;
@@ -13,9 +14,17 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//@Data
+/**
+ *
+ * @author ming
+ */
 public class OpenVINO extends OpenVINOCls {
+
     private static VINO core = null;
+
+    private static OpenVINO openVINO = new OpenVINO();
+
+    private static ExceptionStatusListener listener;
 
     private static boolean initialized;
 
@@ -39,14 +48,30 @@ public class OpenVINO extends OpenVINOCls {
         return openVINO;
     }
 
+    /**
+     * Load from local compressed package
+     * This function will automatically extract to ~/{user}/.openVINO/{version}/
+     * @param path Compressed package path
+     * @return openVINO
+     */
     public static OpenVINO loadPath(String path) {
         throw new UnsupportedOperationException("The current version does not support this operation. Please wait for the new version.");
     }
 
+    /**
+     * Download the corresponding version of the runtime library from the network and keep the latest version in real-time. If not, use local cache.
+     * This function will automatically extract to ~/{user}/.OpenVINO/{version}/
+     * @param url OpenVINO Runtime download server address
+     * @return openVINO
+     */
     public static OpenVINO loadHttp(String url) {
         throw new UnsupportedOperationException("The current version does not support this operation. Please wait for the new version.");
     }
 
+    /**
+     * Obtain the version of OpenVINO
+     * @return ov version
+     */
     public OvVersion getVersion() {
         OvVersion ovVersion = new OvVersion();
         verifyExceptionStatus(core.ov_get_openvino_version(ovVersion));
@@ -71,6 +96,10 @@ public class OpenVINO extends OpenVINOCls {
         return initialized;
     }
 
+    /**
+     * Get OpenVINO runtime Core entity.
+     * @return core
+     */
     public static synchronized VINO getCore() {
         if (core == null && initialized()) {
             throw new NullPointerException("The core is empty, please check if it has been initialized.");
@@ -87,6 +116,10 @@ public class OpenVINO extends OpenVINOCls {
 
     }
 
+    /**
+     * Loading OpenCV Library Files
+     * @param path The directory where the library file is located. If it is null, obtain it from lib
+     */
     public static void loadCvDll(String path) {
         String fileSeparator = System.getProperty("file.separator");
         int osType = SystemUtils.getSystemType();
@@ -133,5 +166,18 @@ public class OpenVINO extends OpenVINOCls {
 
     public static void loadCvDll() {
         loadCvDll(null);
+    }
+
+    public void setExceptionListener(ExceptionStatusListener listener) {
+        if (listener != null) {
+            OpenVINO.listener = listener;
+        }
+    }
+
+    /**
+     *
+     */
+    public static void clearUpErrorIdentification() {
+
     }
 }

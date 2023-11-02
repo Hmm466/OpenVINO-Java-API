@@ -6,11 +6,22 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
+import org.openvino.java.dao.ExceptionStatusListener;
 import org.openvino.java.domain.*;
 import org.openvino.java.utils.StringUtils;
 import org.openvino.java.utils.SystemUtils;
 
+/**
+ *
+ * @author ming
+ */
 public interface VINO extends Library {
+
+    /**
+     *
+     * @param version
+     * @return Status code of the operation: OK(0) for success.
+     */
     int ov_get_openvino_version(OvVersion version);
 
     /**
@@ -148,6 +159,7 @@ public interface VINO extends Library {
     int ov_infer_request_get_input_tensor(Pointer infer_request, PointerByReference tensor);
 
     /**
+     *
      * @param tensor
      * @param shape
      * @return
@@ -183,16 +195,50 @@ public interface VINO extends Library {
      */
     int ov_model_const_output_by_index(Pointer model, long index, PointerByReference outputPort);
 
+    /**
+     *
+     * @param port
+     * @return Status code of the operation: OK(0) for success.
+     */
     int ov_output_const_port_free(Pointer port);
 
+    /**
+     *
+     * @param port
+     * @return Status code of the operation: OK(0) for success.
+     */
     int ov_output_port_free(Pointer port);
 
+    /**
+     *
+     * @param inferRequest
+     * @return Status code of the operation: OK(0) for success.
+     */
     int ov_infer_request_infer(Pointer inferRequest);
 
+    /**
+     *
+     * @param inferRequest
+     * @param tensor
+     * @return Status code of the operation: OK(0) for success.
+     */
     int ov_infer_request_get_output_tensor(Pointer inferRequest, PointerByReference tensor);
 
+    /**
+     *
+     * @param tensor
+     * @param data
+     * @return Status code of the operation: OK(0) for success.
+     */
     int ov_tensor_data(Pointer tensor, PointerByReference data);
 
+    /**
+     *
+     * @param model
+     * @param name
+     * @param tensor
+     * @return Status code of the operation: OK(0) for success.
+     */
     int ov_infer_request_get_tensor(Pointer model, String name, PointerByReference tensor);
 
     /**
@@ -702,7 +748,7 @@ public interface VINO extends Library {
      * @param rank  support dynamic and static rank.
      * @param dims  support dynamic and static dimension.
      * @param shape The pointer of partial shape
-     * @return
+     * @return Status code of the operation: OK(0) for success.
      */
     int ov_partial_shape_create_dynamic(OvRank rank, OvDimension dims, OvPartialShape shape);
 
@@ -712,7 +758,7 @@ public interface VINO extends Library {
      * @param rank  support dynamic and static rank.
      * @param dims  support dynamic and static dimension.
      * @param shape The pointer of partial shape
-     * @return
+     * @return Status code of the operation: OK(0) for success.
      */
     int ov_partial_shape_create_static(long rank, LongByReference dims, OvPartialShape shape);
 
@@ -728,7 +774,7 @@ public interface VINO extends Library {
      *
      * @param partialShape The partial_shape pointer.
      * @param shape        The shape pointer.
-     * @return
+     * @return Status code of the operation: OK(0) for success.
      */
     int ov_partial_shape_to_shape(OvPartialShape partialShape, OvShape shape);
 
@@ -737,7 +783,7 @@ public interface VINO extends Library {
      *
      * @param shape        The shape.
      * @param partialShape The partial_shape pointer.
-     * @return
+     * @return Status code of the operation: OK(0) for success.
      */
     int ov_shape_to_partial_shape(OvShape shape, OvPartialShape partialShape);
 
@@ -745,7 +791,7 @@ public interface VINO extends Library {
      * Check this partial_shape whether is dynamic
      *
      * @param shape The shape.
-     * @return
+     * @return Status code of the operation: OK(0) for success.
      */
     boolean ov_partial_shape_is_dynamic(OvPartialShape shape);
 

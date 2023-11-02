@@ -41,6 +41,7 @@ OpenVINO vino = OpenVINO.load();
 ```
 
 ## OpenCV 环境配置
+64位系统非必要,除非显示opencv的函数没有找到
 ### Homebrew
 使用命令编辑opev的配置
 ```shell

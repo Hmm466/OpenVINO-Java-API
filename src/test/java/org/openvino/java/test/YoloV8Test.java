@@ -25,7 +25,7 @@ public class YoloV8Test {
 
     private OpenVINO vino;
     private String classer_path = "dataset/lable/COCO_lable.txt";
-    private String imgPath = "dataset/image/demo_2.jpg";
+    private String imgPath = "dataset/image/demo_9.jpg";
     private String modelPath = "model/yolov8/yolov8s.xml";
 
     @Before
@@ -42,17 +42,17 @@ public class YoloV8Test {
         vino.loadCvDll();
         System.setProperty("jna.encoding", "utf-8");
         OvVersion version = vino.getVersion();
-        Console.WriteLine("---- OpenVINO INFO----");
-        Console.WriteLine("Description : %s", version.description);
-        Console.WriteLine("Build number: %s", version.buildNumber);
-        seg();
+        Console.println("---- OpenVINO INFO----");
+        Console.println("Description : %s", version.description);
+        Console.println("Build number: %s", version.buildNumber);
+        pose();
     }
 
     private void det() {
         // -------- Step 1. Initialize OpenVINO Runtime Core --------
         Core core = new Core();
         // -------- Step 2. Read a model --------
-        Console.WriteLine("[INFO] Loading model files: %s", modelPath);
+        Console.println("[INFO] Loading model files: %s", modelPath);
         Model model = core.readModel(modelPath);
         printModelInfo(model);
 
@@ -63,7 +63,7 @@ public class YoloV8Test {
         InferRequest inferRequest = compiledModel.createInferRequest();
 
         // -------- Step 5. Process input images --------
-        Console.WriteLine("[INFO] Read image  files: %s", imgPath);
+        Console.println("[INFO] Read image  files: %s", imgPath);
 
         Mat image = Imgcodecs.imread(imgPath);
 
@@ -105,7 +105,7 @@ public class YoloV8Test {
         // -------- Step 1. Initialize OpenVINO Runtime Core --------
         Core core = new Core();
         // -------- Step 2. Read a model --------
-        Console.WriteLine("[INFO] Loading model files: %s", modelPath);
+        Console.println("[INFO] Loading model files: %s", modelPath);
         Model model = core.readModel(modelPath);
         printModelInfo(model);
 
@@ -116,7 +116,7 @@ public class YoloV8Test {
         InferRequest inferRequest = compileModel.createInferRequest();
 
         // -------- Step 5. Process input images --------
-        Console.WriteLine("[INFO] Read image  files: %s", imgPath);
+        Console.println("[INFO] Read image  files: %s", imgPath);
 
         Mat image = Imgcodecs.imread(imgPath);
 
@@ -164,7 +164,7 @@ public class YoloV8Test {
         // -------- Step 1. Initialize OpenVINO Runtime Core --------
         Core core = new Core();
         // -------- Step 2. Read a model --------
-        Console.WriteLine("[INFO] Loading model files: %s", modelPath);
+        Console.println("[INFO] Loading model files: %s", modelPath);
         Model model = core.readModel(modelPath);
         printModelInfo(model);
 
@@ -175,7 +175,7 @@ public class YoloV8Test {
         InferRequest inferRequest = compiled_model.createInferRequest();
 
         // -------- Step 5. Process input images --------
-        Console.WriteLine("[INFO] Read image  files: %s", imgPath);
+        Console.println("[INFO] Read image  files: %s", imgPath);
 
         Mat image = Imgcodecs.imread(imgPath);
 
@@ -217,7 +217,7 @@ public class YoloV8Test {
         // -------- Step 1. Initialize OpenVINO Runtime Core --------
         Core core = new Core();
         // -------- Step 2. Read a model --------
-        Console.WriteLine("[INFO] Loading model files: %s", modelPath);
+        Console.println("[INFO] Loading model files: %s", modelPath);
         Model model = core.readModel(modelPath);
         printModelInfo(model);
 
@@ -228,7 +228,7 @@ public class YoloV8Test {
         InferRequest inferRequest = compiledModel.createInferRequest();
 
         // -------- Step 5. Process input images --------
-        Console.WriteLine("[INFO] Read image  files: %s", imgPath);
+        Console.println("[INFO] Read image  files: %s", imgPath);
 
         Mat image = Imgcodecs.imread(imgPath);
 
@@ -262,18 +262,18 @@ public class YoloV8Test {
     }
 
     private void printModelInfo(Model model) {
-        Console.WriteLine("[INFO] model name: %s", model.getFriendlyName());
+        Console.println("[INFO] model name: %s", model.getFriendlyName());
         Node inputNode = model.getConstInput(0);
-        Console.WriteLine("[INFO]    inputs:");
-        Console.WriteLine("[INFO]      input name: %s", inputNode.getName());
-        Console.WriteLine("[INFO]      input type: %s", inputNode.getType());
-        Console.WriteLine("[INFO]      input shape: %s", inputNode.getShape().toString());
+        Console.println("[INFO]    inputs:");
+        Console.println("[INFO]      input name: %s", inputNode.getName());
+        Console.println("[INFO]      input type: %s", inputNode.getType());
+        Console.println("[INFO]      input shape: %s", inputNode.getShape().toString());
         inputNode.dispose();
         Node outputNode = model.getConstOutput(0);
-        Console.WriteLine("[INFO]    outputs:");
-        Console.WriteLine("[INFO]      output name: %s", outputNode.getName());
-        Console.WriteLine("[INFO]      output type: %s", outputNode.getType());
-        Console.WriteLine("[INFO]      output shape: %s", outputNode.getShape().toString());
+        Console.println("[INFO]    outputs:");
+        Console.println("[INFO]      output name: %s", outputNode.getName());
+        Console.println("[INFO]      output type: %s", outputNode.getType());
+        Console.println("[INFO]      output shape: %s", outputNode.getShape().toString());
         outputNode.dispose();
     }
 

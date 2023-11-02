@@ -1,9 +1,9 @@
-
+![OpenVINO™ Java API](https://socialify.git.ci/Hmm466/OpenVINO-Java-API/image?description=1&descriptionEditable=%F0%9F%92%9EOpenVINO%20Wrapper%20for%20Java%20%F0%9F%92%9E&font=Inter&forks=1&issues=1&language=1&name=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Light)
 <p align="center">    
     <a href="./LICENSE.txt">
     </a>    
 
-简体中文| [English](README.md)
+简体中文| [English](README_cn.md)
 
 ## 📚 简介
 
@@ -15,7 +15,7 @@
 
 目前有开发者以实现Ubuntu下使用OpenVINO™方法，但是却需要通过C++编译等，带来一些使用困惑，不能达到开箱即用的效果，所以该项目才用JNA实现基于OpenVINO™工具套件推出的OpenVINO™ Java API，旨在推动 OpenVINO™在Java领域的应用。OpenVINO™ Java API 由于是基于 OpenVINO™ 开发，所支持的平台与OpenVINO™ 一致，具体信息可以参考 OpenVINO™。
 
-发版计划：
+版本计划：
 
 - 1.0: 实现基本函数，并提供Yolov8范例
 - 1.1: 实现maven 在线安装
@@ -24,11 +24,19 @@
 
 Java库公示：
 - JNA:
-- opencv:
-- 
+- OpenCV:
+- OpenVINO
+
 ## ⚙ 如何安装
 
 以下文章提供了OpenVINO™ Java API在不同平台的安装方法，可以根据自己使用平台进行安装。
+简短安装既要：
+- 在OpenVINO官网下载对应平台的runtime库
+- 将Runtime库加入环境变量
+- Windows: 放在
+- Linux/Mac OS: 将库文件放入/usr/lib/
+
+**详细使用文档**
 
 - [Mac OS](docs/cn/mac_install.md)
 
@@ -49,8 +57,10 @@ Java库公示：
 public class OpenVINOTest {
     
     public static void main(String[] args) {
-        //实现OpenVINO 库加载
+        //实现OpenVINO 库加载.
         OpenVINO vino = OpenVINO.load("libopenvino_c.dylib");
+        //如果将库放置path目录(/usr/lib)可以这样简写
+        //OpenVINO vino = OpenVINO.load();
         Core core = new Core();  // 初始化 Core 核心
         Model model = core.read_model("./model.xml");  // 读取模型文件
         CompiledModel compiled_model = core.compiled_model(model, "AUTO");  // 将模型加载到设备
@@ -66,15 +76,21 @@ public class OpenVINOTest {
 
 项目中所封装的类、对象例如Core、Model、Tensor等，通过调用 C api 接口实现，具有非托管资源，需要调用**dispose()**方法处理，否则就会出现内存泄漏。
 
-
-
 ## 💻 应用案例
+- 爱克斯开发板使用OpenVINO™ Java API部署Yolov8模型
+- 基于Spring Boot 在线AI服务
+- 基于客服端模式运行
 
+## 测试系统
+- Mac OS:Sonoma 
+- Ubuntu:23.04(64)
+- Windows
 
 ## 🗂 API 文档
 
 
 ## 🔃 更新日志
+
 
 ## 🎖 贡献
 

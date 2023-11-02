@@ -202,4 +202,11 @@ public class Core extends OpenVINOCls {
         getVino().ov_core_free(getValue());
         setVinoObj(null);
     }
+
+    /**
+     * Release the memory allocated by ov_core_t.
+     */
+    public void free() {
+        dispose();
+    }
 }
