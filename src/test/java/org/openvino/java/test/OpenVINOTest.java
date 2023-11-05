@@ -7,11 +7,9 @@ import org.openvino.java.domain.OvVersion;
 public class OpenVINOTest {
     public static void main(String[] args) {
         System.setProperty("jna.encoding", "utf-8");
-        String modelPath = "/Users/ming/Downloads/OpenVINO-CSharp-API-csharp3.0/model/yolov8/yolov8s-cls.xml";
-        OpenVINO vino = OpenVINO.load("libopenvino_c.dylib");
+        String modelPath = "model/yolov8/yolov8s-cls.xml";
+        OpenVINO vino = OpenVINO.load();
         OvVersion version = vino.getVersion();
-
-        System.out.println(version.buildNumber + " -- " + version.description);
         Core core = new Core();
         Model model = core.readModel(modelPath);
         CompiledModel compiledModel = core.compileModel(model, "AUTO");
@@ -42,8 +40,6 @@ public class OpenVINOTest {
         long height = input_shape.getDims().get(2);
         long width = input_shape.getDims().get(3);
         float[] input_data = new float[(int) (channels * height * width)];
-//        Marshal.Copy(input_mat.Ptr(0), input_data, 0, input_data.Length);
-//        input_tensor.set_data(input_data);
     }
 
     private static void println(String format, Object... objects) {

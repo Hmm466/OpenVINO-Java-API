@@ -18,20 +18,18 @@
 下载所属电脑对应平台： 
 将runtime/3rdparty/tbb/lib/*.dylib 拷贝至 runtime/lib/intel64/release/下
 ### 默认库路径安装
-将runtime/lib/intel64/release/*.dylib 拷贝至以下任意路径之一即可:
-- /System/Volumes/Preboot/Cryptexes/ 
-- jdk所在目录/Contents/Home/lib/jli/
+将runtime/lib/intel64/release/*.so 拷贝至以下任意路径之一即可:
 - /usr/lib/
 - /usr/local/lib/
 
 ### 指定库路径安装
-将runtime/lib/intel64/release/*.dylib 拷贝到任意自己觉得合适的目录,如/User/OpenVINO/libs/
+将runtime/lib/intel64/release/*.so 拷贝到任意自己觉得合适的目录,如/User/OpenVINO/libs/
 
 在初始化代码中加入
 ```java
 System.setProperty("java.library.path", "/User/OpenVINO/libs");
 //实现OpenVINO 库加载
-OpenVINO vino = OpenVINO.load("libopenvino_c.dylib");
+OpenVINO vino = OpenVINO.load("libopenvino_c.so");
 //也可以直接省略
 OpenVINO vino = OpenVINO.load();
 ```
@@ -42,18 +40,6 @@ OpenVINO vino = OpenVINO.load();
 
 ## OpenCV 环境配置
 64位系统非必要,除非显示opencv的函数没有找到
-### Homebrew
-使用命令编辑opev的配置
-```shell
-brew edit opencv
-```
-在-DBUILD_opencv_java=OFF 修改为-DBUILD_opencv_java=ON
-
-然后编译
-```shell
-brew reinstall --build-from-source opencv
-```
-
 ### 源码编译
 [opencv官网](https://opencv.org) 下载源码
 
@@ -62,8 +48,8 @@ brew reinstall --build-from-source opencv
 mkdir build
 cd build
 cmake -DBUILD_SHARED_LIBS=OFF -DWITH_IPP=OFF -DBUILD_ZLIB=OFF -DCMAKE_INSTALL_PREFIX=你的opencv目录 
-  -DJAVA_INCLUDE_PATH=JDK目录/Contents/Home/include -DJAVA_AWT_INCLUDE_PATH=JDK目录/Contents/Home/include 
-  -DJAVA_INCLUDE_PATH2=JDK目录/Contents/Home/include/darwin -DBUILD_JAVA=ON ../
+  -DJAVA_INCLUDE_PATH={jdk 所在位置}/include -DJAVA_AWT_INCLUDE_PATH={jdk 所在位置}/include 
+  -DJAVA_INCLUDE_PATH2={jdk 所在位置}/include -DBUILD_JAVA=ON ../
 ```
 注意看输出有没有
 ```
@@ -85,7 +71,7 @@ make install
 ### 使用
 
 ```java
-//或者将build/lib/的libopencv_java*.dylib移动到自己喜欢的目录
+//或者将build/lib/的libopencv_java*.so移动到自己喜欢的目录
 OpenVINO.loadCvDll(CP目录/build/lib)
 ```
 

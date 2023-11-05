@@ -25,7 +25,7 @@ public class YoloV8Test {
 
     private OpenVINO vino;
     private String classer_path = "dataset/lable/COCO_lable.txt";
-    private String imgPath = "dataset/image/demo_9.jpg";
+    private String imgPath = "dataset/image/demo_2.jpg";
     private String modelPath = "model/yolov8/yolov8s.xml";
 
     @Before
@@ -45,7 +45,7 @@ public class YoloV8Test {
         Console.println("---- OpenVINO INFO----");
         Console.println("Description : %s", version.description);
         Console.println("Build number: %s", version.buildNumber);
-        pose();
+        seg();
     }
 
     private void det() {
@@ -88,7 +88,7 @@ public class YoloV8Test {
 
         Tensor outputTensor = inferRequest.getOutputTensor();
         int outputLength = (int) outputTensor.getSize();
-        float[] outputData = outputTensor.getData(float.class, outputLength);
+        float[] outputData = outputTensor.getData(float[].class, outputLength);
         YoloV8 process = new YoloV8(factors, 80);
         Result result = process.processDetResult(outputData);
         process.printResult(result);
@@ -275,9 +275,5 @@ public class YoloV8Test {
         Console.println("[INFO]      output type: %s", outputNode.getType());
         Console.println("[INFO]      output shape: %s", outputNode.getShape().toString());
         outputNode.dispose();
-    }
-
-    private static void println(String format, Object... objects) {
-        System.out.println(String.format(format, objects));
     }
 }
