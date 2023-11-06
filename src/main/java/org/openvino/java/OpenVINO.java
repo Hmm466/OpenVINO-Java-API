@@ -132,12 +132,13 @@ public class OpenVINO extends OpenVINOCls {
         if (!path.endsWith(fileSeparator)) {
             path += fileSeparator;
         }
+        String head = osType == SystemUtils.SYSTEM_WINDOWS ? "opencv_java" : "libopencv_java";
         String fileType = osType == SystemUtils.SYSTEM_WINDOWS ? "dll" : osType == SystemUtils.SYSTEM_MAC ? "dylib" : "so";
         List<Integer> targetFiles = new ArrayList<>();
         File[] files = new File(path).listFiles();
         if (files != null && files.length > 0) {
             for (File file : files) {
-                if (file.getName().matches("libopencv_java\\d+\\." + fileType)) {
+                if (file.getName().matches(head + "\\d+\\." + fileType)) {
                     int version = getCvVersion(file.getName().trim());
                     if (version != -1) {
                         targetFiles.add(version);
@@ -146,7 +147,7 @@ public class OpenVINO extends OpenVINOCls {
             }
             targetFiles.sort((a, b) -> b.compareTo(a));
             if (targetFiles.size() > 0) {
-                System.load(path + "libopencv_java" + targetFiles.get(0) + "." + fileType);
+                System.load(path + head + targetFiles.get(0) + "." + fileType);
                 return;
             }
         }
@@ -157,7 +158,8 @@ public class OpenVINO extends OpenVINOCls {
         if (StringUtils.isNullOrEmpty(name)) {
             return -1;
         }
-        Matcher matcher = Pattern.compile("libopencv_java(\\d+)\\.\\D+").matcher(name);
+        String head = SystemUtils.getSystemType() == SystemUtils.SYSTEM_WINDOWS ? "opencv_java" : "libopencv_java";
+        Matcher matcher = Pattern.compile(head + "(\\d+)\\.\\D+").matcher(name);
         if (matcher.find()) {
             return Integer.parseInt(matcher.group(1));
         }
