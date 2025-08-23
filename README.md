@@ -3,7 +3,7 @@
     <a href="./LICENSE.txt">
     </a>    
 
-简体中文| [English](README_cn.md)
+简体中文| [English](README_en.md)
 
 ## 📚 简介
 
@@ -15,14 +15,16 @@
 
 目前有开发者以实现Ubuntu下使用OpenVINO™方法，但是却需要通过C++编译等，带来一些使用困惑，不能达到开箱即用的效果，所以该项目才用JNA实现基于OpenVINO™工具套件推出的OpenVINO™ Java API，旨在推动 OpenVINO™在Java领域的应用。OpenVINO™ Java API 由于是基于 OpenVINO™ 开发，所支持的平台与OpenVINO™ 一致，具体信息可以参考 OpenVINO™。
 
-版本计划：
+### 版本计划：
 
 - 1.0: 实现基本函数，并提供Yolov8范例
 - 1.1: 实现maven 在线安装
 - 2.0: 实现库本地加载，告别复杂安装.
 - 3.0: 实现在线加载
 
-Java库公示：
+（Gen AI API 正在开发中）
+
+### Java库公示：
 - JNA:
 - OpenCV:
 - OpenVINO
@@ -62,14 +64,14 @@ public class OpenVINOTest {
         //如果将库放置path目录(/usr/lib)可以这样简写
         //OpenVINO vino = OpenVINO.load();
         Core core = new Core();  // 初始化 Core 核心
-        Model model = core.read_model("./model.xml");  // 读取模型文件
-        CompiledModel compiled_model = core.compiled_model(model, "AUTO");  // 将模型加载到设备
-        InferRequest infer_request = compiled_model.create_infer_request();  // 创建推理通道
-        Tensor input_tensor = infer_request.get_tensor("images");  // 获取输入节点Tensor
-        infer_request.infer();  // 模型推理
-        Tensor output_tensor = infer_request.get_tensor("output0");  // 获取输出节点Tensor
+        Model model = core.readModel("./model.xml");  // 读取模型文件
+        CompiledModel compiledModel = core.compiledModel(model, "AUTO");  // 将模型加载到设备
+        InferRequest inferRequest = compiledModel.createInferRequest();  // 创建推理通道
+        Tensor inputTensor = inferRequest.getTensor("images");  // 获取输入节点Tensor
+        inferRequest.infer();  // 模型推理
+        Tensor output_tensor = inferRequest.getTensor("output0");  // 获取输出节点Tensor
         //清理 Core 非托管内存
-        core.free();  
+        core.free();
     }
 }
 ```

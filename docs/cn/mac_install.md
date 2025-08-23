@@ -43,6 +43,8 @@ OpenVINO vino = OpenVINO.load();
 ## OpenCV 环境配置
 非必要,除非显示opencv的函数没有找到
 
+（注意：如果你想直接体验，或者不熟悉本项目，可以直接使用Windows体验，基本开箱即用。）
+
 ### Homebrew
 使用命令编辑opev的配置
 ```shell

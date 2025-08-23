@@ -1,4 +1,4 @@
-# Mac 安装 OpenVINO™ Java API
+# Windows 安装 OpenVINO™ Java API
 
 &emsp;    OpenVINO™ Java API 主要基于 OpenVINO™ 和 Java 开发，支持 Mac、Windows、Linux版本
 

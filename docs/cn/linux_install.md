@@ -15,8 +15,6 @@
 - 使用流行框架（如TensorFlow，PyTorch等）训练的模型
 - 减少资源需求，并在从边缘到云的一系列英特尔®平台上高效部署
 
-下载所属电脑对应平台： 
-将runtime/3rdparty/tbb/lib/*.dylib 拷贝至 runtime/lib/intel64/release/下
 ### 默认库路径安装
 将runtime/lib/intel64/release/*.so 拷贝至以下任意路径之一即可:
 - /usr/lib/
@@ -40,6 +38,9 @@ OpenVINO vino = OpenVINO.load();
 
 ## OpenCV 环境配置
 64位系统非必要,除非显示opencv的函数没有找到
+
+（注意：如果你想直接体验，或者不熟悉本项目，可以直接使用Windows体验，基本开箱即用。）
+
 ### 源码编译
 [opencv官网](https://opencv.org) 下载源码
 
