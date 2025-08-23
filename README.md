@@ -83,6 +83,15 @@ public class OpenVINOTest {
 - 基于Spring Boot 在线AI服务
 - 基于客服端模式运行
 
+## 示例
+[OpenVINO-Java-API-Examples](https://github.com/Hmm466/OpenVINO-Java-API-Examples) 仓库包含使用 OpenVINO-Java-API 库的示例。您可以点击此处进行运行。
+
+| # | 模型名称          | 描述                                  | Link                  |
+|---|---------------|-------------------------------------|-----------------------|
+| 1 | HelloOpenVINO | 打印OpenVINO的版本信息，验证OpenVINO 是否能够正常加载 | [OpenVINOTest.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/OpenVINOTest.java) |
+| 2 | YoloV8        | 使用YoloV8模型进行seg/pose/cls 推理         |    [YoloV8Test.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/yolo/YoloV8Test.java)                   |
+
+
 ## 测试系统
 - Mac OS:Sonoma 
 - Ubuntu:23.04(64)

@@ -84,6 +84,14 @@ The classes and objects encapsulated in the project, such as Core, Model, Tensor
 - Online AI service based on Spring Boot
 - Run in client mode
 
+## Examples
+The [OpenVINO-Java-API-Examples](https://github.com/Hmm466/OpenVINO-Java-API-Examples) repository contains examples using the OpenVINO-Java-API library. You can run them here.
+
+| # | Model Name | Description | Link |
+|---|---------------|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1 | HelloOpenVINO | Print OpenVINO version information to verify that OpenVINO can be loaded successfully. |[OpenVINOTest.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/OpenVINOTest.java) |
+| 2 | YoloV8 | Perform seg/pose/cls inference using the YoloV8 model. | [YoloV8Test.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/yolo/YoloV8Test.java)                   |
+
 ## Test system
 - Mac OS:Sonoma 
 - Ubuntu:23.04(64)
