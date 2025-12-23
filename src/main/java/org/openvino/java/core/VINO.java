@@ -897,7 +897,7 @@ public interface VINO extends Library {
      * @param shape The input/output shape object pointer.
      * @return Status code of the operation: OK(0) for success.
      */
-    int ov_shape_create(long rank, LongByReference dims, OvShape shape);
+    int ov_shape_create(long rank, Pointer dims, OvShape shape);
 
     /**
      * Free a shape object's internal memory.

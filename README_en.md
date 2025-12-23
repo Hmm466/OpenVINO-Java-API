@@ -91,6 +91,9 @@ The [OpenVINO-Java-API-Examples](https://github.com/Hmm466/OpenVINO-Java-API-Exa
 |---|---------------|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 1 | HelloOpenVINO | Print OpenVINO version information to verify that OpenVINO can be loaded successfully. |[OpenVINOTest.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/OpenVINOTest.java) |
 | 2 | YoloV8 | Perform seg/pose/cls inference using the YoloV8 model. | [YoloV8Test.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/yolo/YoloV8Test.java)                   |
+| 3 | GenAI Text Generation |         |                      |
+| 4 | GenAI VLM Pipeline |         |                       |
+| 5 | Whisper Automatic Speech Recognition |          |                    |
 
 ## Test system
 - Mac OS:Sonoma 
@@ -99,9 +102,30 @@ The [OpenVINO-Java-API-Examples](https://github.com/Hmm466/OpenVINO-Java-API-Exa
 
 ## 🗂 API documentation
 
+### Gen AI
+```Java
+//Dll path. Leave it blank on Linux or Mac.
+String libPath = null;
+OvGenAI ovGenAI = new OvGenAI(libPath);
+ovGenAI.init();
+//Load the model. The model must be downloaded using optimize-cli.
+String modelPath = "qwen-7b-chat\\INT4_compressed_weights";
+ovGenAI.setDevice("GPU");
+ovGenAI.loadLLMModel(modelPath);
+ovGenAI.setTokens(1024);
+ovGenAI.setLLMCallback(new OvGenAILLMCallback() {
+@Override
+public void generation(OvGenAIStatus ovGenAIStatus, String s) {
+print("Status:" + ovGenAIStatus + "," + s);
+}
+});
+print("output:" + ovGenAI.generation("What is OpenVINO?",false));
+ovGenAI.releasePipeline();
+//↑Note false This function allows you to control the output without calling the OvGenAILLMCallback callback and return directly. If set to True, OvGenAILLMCallback is forced to return, and the result is NULL.
+```
 
 ## 🔃 Changelog
-
+- September 7, 2025: Complete GenAI API
 
 ## 🎖 Contribute
 

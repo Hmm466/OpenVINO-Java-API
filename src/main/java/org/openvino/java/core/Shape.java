@@ -1,6 +1,7 @@
 package org.openvino.java.core;
 
 import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.PointerByReference;
 import org.openvino.java.OpenVINO;
 import org.openvino.java.base.OpenVINOCls;
 import org.openvino.java.domain.OvShape;
@@ -47,18 +48,16 @@ public class Shape extends OpenVINOCls {
         }
     }
 
-    /**
-     * Constructs Shape from the list.
-     *
-     * @param axisLengths Initialized list
-     */
-    public Shape(List<Long> axisLengths) {
+    public Shape(long[] dimsArray) {
         super("Shape", null);
         dims = new ArrayList<>();
-        dims.addAll(axisLengths);
+        for (long l : dimsArray) {
+            dims.add(l);
+        }
         shape = new OvShape();
-        LongByReference longByReference = new LongByReference();
-        OpenVINO.getCore().ov_shape_create(axisLengths.size(), longByReference, shape);
+        PointerByReference reference = new PointerByReference();
+        reference.getValue().write(0,dimsArray,0,dimsArray.length);
+        OpenVINO.getCore().ov_shape_create(dimsArray.length, reference.getValue(), shape);
     }
 
     /**

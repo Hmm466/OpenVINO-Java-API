@@ -86,10 +86,13 @@ public class OpenVINOTest {
 ## 示例
 [OpenVINO-Java-API-Examples](https://github.com/Hmm466/OpenVINO-Java-API-Examples) 仓库包含使用 OpenVINO-Java-API 库的示例。您可以点击此处进行运行。
 
-| # | 模型名称          | 描述                                  | Link                  |
-|---|---------------|-------------------------------------|-----------------------|
-| 1 | HelloOpenVINO | 打印OpenVINO的版本信息，验证OpenVINO 是否能够正常加载 | [OpenVINOTest.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/OpenVINOTest.java) |
-| 2 | YoloV8        | 使用YoloV8模型进行seg/pose/cls 推理         |    [YoloV8Test.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/yolo/YoloV8Test.java)                   |
+| # | 模型名称                 | 描述                                  | Link                  |
+|---|----------------------|-------------------------------------|-----------------------|
+| 1 | HelloOpenVINO        | 打印OpenVINO的版本信息，验证OpenVINO 是否能够正常加载 | [OpenVINOTest.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/OpenVINOTest.java) |
+| 2 | YoloV8               | 使用YoloV8模型进行seg/pose/cls 推理         |    [YoloV8Test.java](https://github.com/Hmm466/OpenVINO-Java-API-Examples/blob/master/src/main/java/org/openvino/java/examples/yolo/YoloV8Test.java)                   |
+| 3 | GenAI Text Generation |         |                      |
+| 4 | GenAI VLM Pipeline |         |                       |
+| 5 | Whisper Automatic Speech Recognition |          |                    |
 
 
 ## 测试系统
@@ -99,8 +102,30 @@ public class OpenVINOTest {
 
 ## 🗂 API 文档
 
+### Gen AI
+```Java
+//Dll 所在路径，Linux 或者 Mac 可以直接置空
+String libPath = null;
+OvGenAI ovGenAI = new OvGenAI(libPath);
+ovGenAI.init();
+//加载模型.模型需要通过optimum-cli 下载
+String modelPath = "qwen-7b-chat\\INT4_compressed_weights";
+ovGenAI.loadLLMModel(modelPath);
+ovGenAI.setTokens(1024);
+ovGenAI.setDevice("GPU");
+ovGenAI.setLLMCallback(new OvGenAILLMCallback() {
+    @Override
+    public void generation(OvGenAIStatus ovGenAIStatus, String s) {
+        print("Status:" + ovGenAIStatus + "," + s);
+    }
+});
+print("output:" + ovGenAI.generation("什么是OpenVINO?",false));
+ovGenAI.releasePipeline();
+// ↑注意false 可以控制输出不从OvGenAILLMCallback 回调，直接返回，如果设置为True，则强制OvGenAILLMCallback返回，结果为NULL
+```
 
 ## 🔃 更新日志
+- 2025年9月7日 完成GenAI API
 
 
 ## 🎖 贡献
